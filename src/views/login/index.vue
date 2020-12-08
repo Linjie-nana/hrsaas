@@ -58,7 +58,8 @@
 
       <div class="tips">
         <span style="margin-right:20px;">账号: 13800000002</span>
-        <span>密码: 123456</span>
+        <span>密码: 123456</span> <br>
+        <span>{{ $store.state.user.token }}</span>
       </div>
     </el-form>
   </div>
@@ -68,7 +69,7 @@
 // 表单验证调用外链方法
 import { validMobile, validPassword } from '@/utils/validate'
 import { login } from '@/api/user'
-import { setToken } from '@/utils/auth'
+
 export default {
   name: 'Login',
   data() {
@@ -133,7 +134,7 @@ export default {
         const { data, message, success } = res.data
         if (success) {
           this.$message.success(message)
-          setToken(data)
+          this.$store.commit('user/setToken', data)
         }
       })
     }
