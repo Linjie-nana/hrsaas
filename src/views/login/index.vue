@@ -68,6 +68,7 @@
 // 表单验证调用外链方法
 import { validMobile, validPassword } from '@/utils/validate'
 import { login } from '@/api/user'
+import { setToken } from '@/utils/auth'
 export default {
   name: 'Login',
   data() {
@@ -129,6 +130,11 @@ export default {
     handleLogin() {
       login(this.loginForm).then(res => {
         console.log(res)
+        const { data, message, success } = res.data
+        if (success) {
+          this.$message.success(message)
+          setToken(data)
+        }
       })
     }
   }
