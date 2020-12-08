@@ -68,7 +68,6 @@
 <script>
 // 表单验证调用外链方法
 import { validMobile, validPassword } from '@/utils/validate'
-import { login } from '@/api/user'
 
 export default {
   name: 'Login',
@@ -91,7 +90,7 @@ export default {
     return {
       loginForm: {
         mobile: '13800000002',
-        password: '111111'
+        password: '123456'
       },
       loginRules: {
         // 设置判断表单验证
@@ -129,14 +128,7 @@ export default {
       })
     },
     handleLogin() {
-      login(this.loginForm).then(res => {
-        console.log(res)
-        const { data, message, success } = res.data
-        if (success) {
-          this.$message.success(message)
-          this.$store.commit('user/setToken', data)
-        }
-      })
+      this.$store.dispatch('user/login', this.loginForm)
     }
   }
 }
