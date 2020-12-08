@@ -14,15 +14,15 @@
         </h3>
       </div>
 
-      <el-form-item prop="username">
+      <el-form-item prop="mobile">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
         <el-input
-          ref="username"
-          v-model="loginForm.username"
-          placeholder="Username"
-          name="username"
+          ref="mobile"
+          v-model="loginForm.mobile"
+          placeholder="mobile"
+          name="mobile"
           type="text"
           tabindex="1"
           auto-complete="on"
@@ -67,7 +67,7 @@
 <script>
 // 表单验证调用外链方法
 import { validMobile, validPassword } from '@/utils/validate'
-
+import { login } from '@/api/user'
 export default {
   name: 'Login',
   data() {
@@ -88,12 +88,12 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
+        mobile: '13800000002',
         password: '111111'
       },
       loginRules: {
         // 设置判断表单验证
-        username: [
+        mobile: [
           { required: true, trigger: 'blur', message: '手机号不能为空' },
           { trigger: 'blur', validator: validateMobile }
         ],
@@ -127,22 +127,8 @@ export default {
       })
     },
     handleLogin() {
-      this.$refs.loginForm.validate((valid) => {
-        if (valid) {
-          this.loading = true
-          this.$store
-            .dispatch('user/login', this.loginForm)
-            .then(() => {
-              this.$router.push({ path: this.redirect || '/' })
-              this.loading = false
-            })
-            .catch(() => {
-              this.loading = false
-            })
-        } else {
-          console.log('error submit!!')
-          return false
-        }
+      login(this.loginForm).then(res => {
+        console.log(res)
       })
     }
   }
