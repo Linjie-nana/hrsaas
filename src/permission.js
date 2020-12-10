@@ -14,6 +14,10 @@ router.beforeEach((to, from, next) => {
     if (to.path === '/login') {
       next('/')
     } else {
+      // 如果没有userId则不会发送数据请求
+      if (!store.getters.userId) {
+        store.dispatch('user/getUserInfo')
+      }
       next()
     }
   } else {
