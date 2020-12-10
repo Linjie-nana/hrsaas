@@ -68,7 +68,7 @@
 <script>
 // 表单验证调用外链方法
 import { validMobile, validPassword } from '@/utils/validate'
-
+import { Message } from 'element-ui'
 export default {
   name: 'Login',
   data() {
@@ -103,6 +103,7 @@ export default {
           { trigger: 'blur', validator: validatePassword }
         ]
       },
+      // 转圈状态的控制组件
       loading: false,
       passwordType: 'password',
       redirect: undefined
@@ -127,8 +128,25 @@ export default {
         this.$refs.password.focus()
       })
     },
-    handleLogin() {
-      this.$store.dispatch('user/login', this.loginForm)
+    async handleLogin() {
+      // 转圈状态
+      this.loading = true
+      try {
+        // 表单校验，如果获得的状态是true,就调用方法发送请求。
+        const isOk = await this.$refs.loginForm.validate()
+        if (isOk) {
+          await this.$store.dispatch('user/login', this.loginForm)
+          // 转跳到主页
+          this.$router.push('/')
+        }
+      } catch (error) {
+        // 如果抓取到错误，则提示要输入正确的格式
+        console.log(error)
+        Message.error('请提交的格式')
+      } finally {
+        // 最后都执行转圈状态调整
+        this.loading = false
+      }
     }
   }
 }

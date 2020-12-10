@@ -17,16 +17,12 @@ export default {
   },
   actions: {
     // data是从login/index页面传值过来的。context是这个域里面的内容
-    login(context, data) {
-      login(data).then(res => {
-        console.log(res)
-        const { data, message, success } = res.data
-        if (success) {
-          Message.success(message)
-          // 通过context,调用mutations中的setToken
-          context.commit('setToken', data)
-        }
-      })
+    async login(context, data) {
+      // then被拦截器解析后，token直接返回的是data
+      const result = await login(data)
+      Message.success('登录成功')
+      // 通过context,调用mutations中的setToken
+      context.commit('setToken', result)
     }
   }
 }
