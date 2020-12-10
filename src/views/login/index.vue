@@ -59,7 +59,7 @@
       <div class="tips">
         <span style="margin-right:20px;">账号: 13800000002</span>
         <span>密码: 123456</span> <br>
-        <span>{{ $store.state.user.token }}</span>
+        <span>{{ $store.getters.token }}</span>
       </div>
     </el-form>
   </div>
