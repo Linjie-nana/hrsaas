@@ -15,6 +15,13 @@ export function getUserInfo() {
   })
 }
 
+// 获取用户详情数据,得到头像照片
+export function getUserDetailById(id) {
+  return request({
+    url: 'sys/user/' + id
+  })
+}
+
 export function logout() {
 
 }
