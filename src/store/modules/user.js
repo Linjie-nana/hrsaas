@@ -1,11 +1,12 @@
 import { setToken, getToken } from '@/utils/auth'
-import { login } from '@/api/user'
+import { login, getUserInfo } from '@/api/user'
 import { Message } from 'element-ui'
 export default {
   namespaced: true,
   state: {
     // 每次刷新后获取存在cookies中的数值
-    token: getToken()
+    token: getToken(),
+    userInfo: {}
   },
   mutations: {
     setToken(state, data) {
@@ -13,6 +14,9 @@ export default {
       state.token = data
       // 调用上面引入的setToken方法
       setToken(data)
+    },
+    setUserInfo(state, data) {
+      state.userInfo = data
     }
   },
   actions: {
@@ -23,6 +27,11 @@ export default {
       Message.success('登录成功')
       // 通过context,调用mutations中的setToken
       context.commit('setToken', result)
+    },
+    async getUserInfo(context, data) {
+      // 与我上面自定义的getUserInfo异步方法一样了,注意不要搞混
+      const result = await getUserInfo()
+      context.commit('setUserInfo', result)
     }
   }
 }
