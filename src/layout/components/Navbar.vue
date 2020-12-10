@@ -16,8 +16,9 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img src="@/assets/common/bigUserHeader.png/" class="user-avatar">
-          <span class="name">{{ $store.getters.name }}</span>
+          <!-- v-imageerror如果错误,将值加入到自定义方法中 -->
+          <img v-imageerror="defaultImg" :src="staffPhoto" class="user-avatar">
+          <span class="name">{{ name }}</span>
           <i class="el-icon-caret-bottom" style="color: #fff" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -45,8 +46,15 @@ export default {
     // Breadcrumb,
     Hamburger
   },
+  data() {
+    return {
+      // 这里设定图片错误时的默认图片
+      defaultImg: require('@/assets/common/head.jpg')
+    }
+  },
   computed: {
-    ...mapGetters(['sidebar', 'avatar'])
+    // 辅助函数引入getters
+    ...mapGetters(['sidebar', 'name', 'staffPhoto'])
   },
   methods: {
     toggleSideBar() {
