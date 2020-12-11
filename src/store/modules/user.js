@@ -1,4 +1,4 @@
-import { setToken, getToken } from '@/utils/auth'
+import { setToken, getToken, removeToken } from '@/utils/auth'
 import { login, getUserInfo, getUserDetailById } from '@/api/user'
 import { Message } from 'element-ui'
 export default {
@@ -17,6 +17,13 @@ export default {
     },
     setUserInfo(state, data) {
       state.userInfo = data
+    },
+    removeToken(state) {
+      removeToken()
+      state.token = ''
+    },
+    removeUserInfo(state) {
+      state.userInfo = ''
     }
   },
   actions: {
@@ -44,6 +51,11 @@ export default {
         ...dataUserInfo, ...getUserDetail
       }
       context.commit('setUserInfo', userInfo)
+    },
+
+    logout({ commit }) {
+      commit('removeToken')
+      commit('removeUserInfo')
     }
   }
 }
