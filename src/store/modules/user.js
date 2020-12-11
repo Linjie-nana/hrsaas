@@ -1,4 +1,4 @@
-import { setToken, getToken, removeToken } from '@/utils/auth'
+import { setToken, getToken, removeToken, setTimeStamp } from '@/utils/auth'
 import { login, getUserInfo, getUserDetailById } from '@/api/user'
 import { Message } from 'element-ui'
 export default {
@@ -34,6 +34,8 @@ export default {
       Message.success('登录成功')
       // 通过context,调用mutations中的setToken
       context.commit('setToken', result)
+      // 登录将时间加入
+      setTimeStamp()
     },
     // async getUserInfo(context, data) {
     //   // 与我上面自定义的getUserInfo异步方法一样了,注意不要搞混
