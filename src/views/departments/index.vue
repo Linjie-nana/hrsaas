@@ -2,7 +2,7 @@
   <div class="dashboard-container">
     <div class="app-container">
       <h2>
-        审批
+        组织架构
       </h2>
     </div>
   </div>
