@@ -39,8 +39,17 @@ service.interceptors.response.use(res => {
     return Promise.reject(new Error(message))
   }
 }, err => {
+  // 由此得到token错误代码10002
+  // 得到数据后，错误拦截，验证token错误码后进行操作
+  console.dir(err)
+  if (err.response && err.response.data && err.response.data.code === 10002) {
+    store.dispatch('user/logout')
+    router.push('/login')
+  }
   // 如果不是200的成功状态
+  // 弹框
   Message.error(err.message)
+  // 返回报错
   return Promise.reject(err.message)
 })
 export default service
