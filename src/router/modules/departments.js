@@ -5,6 +5,6 @@ export default {
   children: [{
     path: '',
     component: () => import('@/views/departments/index'),
-    meta: { title: '组织架构' }
+    meta: { title: '组织架构', icon: 'tree' }
   }]
 }
