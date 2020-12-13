@@ -43,7 +43,8 @@ export default {
   methods: {
     operateDepts(data) {
       if (data === 'add') {
-        // 添加
+        // 当点击添加时，将data值传入到主页面中，
+        this.$emit('addDepts', this.data)
       }
       if (data === 'edit') {
         // 修改

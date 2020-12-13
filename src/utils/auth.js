@@ -27,7 +27,6 @@ export function setTimeStamp() {
 
 export function converTree(list, pid) {
   const arr = []
-  console.log(list)
   list.forEach(item => {
     if (item.pid === pid) {
       //  嵌套循环
