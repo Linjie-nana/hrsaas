@@ -50,7 +50,7 @@ export default {
         children: 'children'
       },
       company: {
-        // name: '临街77科技股份有限公司',
+        name: '临街77科技股份有限公司',
         manager: '负责人'
       },
 
@@ -65,9 +65,9 @@ export default {
   async created() {
     const result = await department()
     this.departs = converTree(result.depts, '')
-    this.company = {
-      name: result.companyName
-    }
+    // this.company = {
+    //   name: result.companyName
+    // }
   },
 
   methods: {
