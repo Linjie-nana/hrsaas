@@ -11,9 +11,9 @@
       <el-form-item label="部门编码" prop="code">
         <el-input v-model="formData.code" style="width:80%" placeholder="1-50个字符" />
       </el-form-item>
-      <el-form-item label="部门负责人" prop="manager">
+      <!-- <el-form-item label="部门负责人" prop="manager">
         <el-select style="width:80%" placeholder="请选择" />
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="部门介绍" prop="introduce">
         <el-input v-model="formData.introduce" style="width:80%" placeholder="1-300个字符" type="textarea" :rows="3" />
       </el-form-item>
@@ -32,14 +32,44 @@
 </template>
 
 <script>
+import { department } from '@/api/company'
+
 export default {
   props: {
     showDialog: {
       type: Boolean,
       default: false
+    },
+    data: {
+      type: Object,
+      required: true
     }
   },
   data() {
+    // 自定义校验规则
+    const validateDeptsName = (rule, value, callback) => {
+      department().then(data => {
+        // 拿到全部的部门数据
+        const { depts } = data
+        // 如果当前用户输入的名字, 在后台传回的数组中存在,
+        // 并且这个存在同名的部门, pid 还要等于父部门的 id (data.id)
+        // 应该报错
+        depts.some(item => item.name === value && item.pid === this.data.id)
+          ? callback(new Error('同一个部门下不能重名'))
+          : callback()
+      })
+    }
+    const validateDeptsCode = (rule, value, callback) => {
+      department().then(data => {
+        // 拿到全部的部门数据
+        const { depts } = data
+        // 如果重复了序号
+        // 应该报错
+        depts.some(item => item.code === value)
+          ? callback(new Error('不能重复部门序号'))
+          : callback()
+      })
+    }
     return {
       // 获得要上传的数据
       formData: {
@@ -47,16 +77,17 @@ export default {
         code: '',
         manager: '',
         introduce: ''
-
       },
       rules: {
         name: [
           { required: true, message: '部门名称不能为空', trigger: 'blur' },
-          { min: 1, max: 50, message: '部门名称要求1-50个字符', trigger: 'blur' }
+          { min: 1, max: 50, message: '部门名称要求1-50个字符', trigger: 'blur' },
+          { trigger: 'blur', validator: validateDeptsName }
         ],
         code: [
           { required: true, message: '部门编码不能为空', trigger: 'blur' },
-          { min: 1, max: 50, message: '部门编码要求1-50个字符', trigger: 'blur' }
+          { min: 1, max: 50, message: '部门编码要求1-50个字符', trigger: 'blur' },
+          { trigger: 'blur', validator: validateDeptsCode }
         ],
         manager: [
           { required: true, message: '部门负责人不能为空', trigger: 'change' }

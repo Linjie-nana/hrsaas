@@ -23,6 +23,7 @@
     <!-- 将showDialog的状态传到弹框子件中 -->
     <AddDepts
       :show-dialog="showDialog"
+      :data="node"
     />
   </div>
 </template>
@@ -51,12 +52,13 @@ export default {
       },
       company: {
         name: '临街77科技股份有限公司',
-        manager: '负责人'
+        manager: '负责人',
+        id: ''
       },
 
       // 这里存储当前点击到的对应栏目的信息
       // 因为是在子组件中点击的，通过emit传到了组件
-      node: null,
+      node: {},
 
       // 控制新增弹框弹出的控制变量
       showDialog: false
