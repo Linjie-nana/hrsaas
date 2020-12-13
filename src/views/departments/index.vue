@@ -22,7 +22,7 @@
 
     <!-- 将showDialog的状态传到弹框子件中 -->
     <AddDepts
-      :show-dialog="showDialog"
+      :show-dialog.sync="showDialog"
       :data="node"
     />
   </div>

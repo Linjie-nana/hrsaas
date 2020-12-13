@@ -122,11 +122,12 @@ export default {
         if (isValid) {
           console.log('校验通过, 可以发送请求了')
           console.log(this.formData)
-          const data = { ...this.formData, pid: this.data.pid }
+          const data = { ...this.formData, pid: this.data.id }
 
           // 将最终得到的data数据发送给服务器
-          const res = await addDepartments(data)
-          console.log(res)
+          await addDepartments(data)
+          console.log('新结果')
+          this.$emit('update:showDialog', false)
         }
       } catch (error) {
         console.log(error)
