@@ -15,15 +15,22 @@
           <!-- 这里是插槽, 每个树形节点都会渲染出一行 -->
           <!-- 利用作用域插槽的方式, 获取内部的每个节点数据 -->
           <!-- 拿到了 scope 以后,当前节点的数据就在 scope.data 当中 -->
-          <TreeTools slot-scope="{data}" :data="data" @addDepts="addDepts" />
+          <TreeTools
+            slot-scope="{data}"
+            :data="data"
+            @addDepts="addDepts"
+            @delDepts="loadPage"
+          />
         </el-tree>
       </el-card>
     </div>
 
     <!-- 将showDialog的状态传到弹框子件中 -->
+    <!-- 从弹窗组件传入到主页中的loadpage动作，使页面重新加载 -->
     <AddDepts
       :show-dialog.sync="showDialog"
       :data="node"
+      @load-page="loadPage"
     />
   </div>
 </template>
@@ -64,15 +71,20 @@ export default {
       showDialog: false
     }
   },
-  async created() {
-    const result = await department()
-    this.departs = converTree(result.depts, '')
-    // this.company = {
-    //   name: result.companyName
-    // }
+  created() {
+    this.loadPage()
   },
 
   methods: {
+    loadPage() {
+      department().then((res) => {
+        const result = res
+        this.departs = converTree(result.depts, '')
+      })
+    // this.company = {
+    //   name: result.companyName
+    // }
+    },
     addDepts(node) {
       this.node = node
       console.log(node)

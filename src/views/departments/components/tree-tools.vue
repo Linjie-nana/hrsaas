@@ -56,10 +56,11 @@ export default {
           type: 'warning'
         }).then(() => {
           delDepartments(this.data.id)
+          this.$emit('delDepts')
         }).catch(() => {
           // 取消
         })
-      }
+      }1
     }
   }
 }

@@ -129,6 +129,7 @@ export default {
           await addDepartments(data)
           console.log('新结果')
           this.$emit('update:showDialog', false)
+          this.$emit('loadPage')
         }
       } catch (error) {
         console.log(error)
