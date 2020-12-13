@@ -4,7 +4,8 @@
   <el-dialog title="新增部门" :visible="showDialog">
     <!-- 表单组件  el-form   label-width设置label的宽度   -->
     <!-- 匿名插槽 -->
-    <el-form label-width="120px" :rules="rules" :model="formData">
+    <!-- ref="form" 定位表格,为全局校验做准备 -->
+    <el-form ref="form" label-width="120px" :rules="rules" :model="formData">
       <el-form-item label="部门名称" prop="name">
         <el-input v-model="formData.name" style="width:80%" placeholder="1-50个字符" />
       </el-form-item>
@@ -32,7 +33,7 @@
     <el-row slot="footer" type="flex" justify="center">
       <!-- 列被分为24 -->
       <el-col :span="6">
-        <el-button type="primary" size="small">确定</el-button>
+        <el-button type="primary" size="small" @click="btnOk">确定</el-button>
         <el-button size="small">取消</el-button>
       </el-col>
     </el-row>
@@ -40,7 +41,7 @@
 </template>
 
 <script>
-import { department } from '@/api/company'
+import { department, addDepartments } from '@/api/company'
 import { getEmployeeSimple } from '@/api/employess'
 export default {
   props: {
@@ -48,6 +49,7 @@ export default {
       type: Boolean,
       default: false
     },
+    // 主页传过来的当前点击的数据
     data: {
       type: Object,
       required: true
@@ -112,7 +114,25 @@ export default {
   methods: {
     async getEmployeeSimple() {
       this.people = await getEmployeeSimple()
+    },
+    async btnOk() {
+      try {
+        console.log('点击了确认')
+        const isValid = await this.$refs.form.validate()
+        if (isValid) {
+          console.log('校验通过, 可以发送请求了')
+          console.log(this.formData)
+          const data = { ...this.formData, pid: this.data.pid }
+
+          // 将最终得到的data数据发送给服务器
+          const res = await addDepartments(data)
+          console.log(res)
+        }
+      } catch (error) {
+        console.log(error)
+      }
     }
+
   }
 }
 </script>
