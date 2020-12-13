@@ -11,9 +11,17 @@
       <el-form-item label="部门编码" prop="code">
         <el-input v-model="formData.code" style="width:80%" placeholder="1-50个字符" />
       </el-form-item>
-      <!-- <el-form-item label="部门负责人" prop="manager">
-        <el-select style="width:80%" placeholder="请选择" />
-      </el-form-item> -->
+      <!-- 聚焦调用请求获取员工数据 -->
+      <el-form-item label="部门负责人" prop="manager">
+        <el-select v-model="formData.manager" style="width:80%" placeholder="请选择" @focus="getEmployeeSimple">
+          <el-option
+            v-for="item in people"
+            :key=" item.id"
+            :label="item.username"
+            :value="item.username"
+          />
+        </el-select>
+      </el-form-item>
       <el-form-item label="部门介绍" prop="introduce">
         <el-input v-model="formData.introduce" style="width:80%" placeholder="1-300个字符" type="textarea" :rows="3" />
       </el-form-item>
@@ -33,7 +41,7 @@
 
 <script>
 import { department } from '@/api/company'
-
+import { getEmployeeSimple } from '@/api/employess'
 export default {
   props: {
     showDialog: {
@@ -71,6 +79,8 @@ export default {
       })
     }
     return {
+      // 获取的员工列表
+      people: [],
       // 获得要上传的数据
       formData: {
         name: '',
@@ -97,6 +107,11 @@ export default {
           { min: 1, max: 300, message: '介绍要求1-300个字符', trigger: 'blur' }
         ]
       }
+    }
+  },
+  methods: {
+    async getEmployeeSimple() {
+      this.people = await getEmployeeSimple()
     }
   }
 }
