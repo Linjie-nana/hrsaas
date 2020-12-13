@@ -24,34 +24,20 @@
 
 <script>
 import TreeTools from './components/tree-tools'
+import { department } from '@/api/company'
+import { converTree } from '@/utils/auth'
 
 export default {
   components: {
     TreeTools
   },
+
   data() {
     return {
       // 本来组织结构的数据应该从服务器获取,
       // 但是现在先不管, 写死数据作为测试
       departs: [
-        {
-          name: '总裁办',
-          manager: '临街77',
-          children: [
-            {
-              name: '董事会',
-              manager: '林'
-            }
-          ]
-        },
-        {
-          name: '行政部',
-          manager: '林'
-        },
-        {
-          name: '人事部',
-          manager: '林'
-        }
+
       ],
       defaultProps: {
         label: 'name',
@@ -62,6 +48,10 @@ export default {
         manager: '负责人'
       }
     }
+  },
+  async created() {
+    const result = await department()
+    this.departs = converTree(result.depts, '')
   }
 
 }

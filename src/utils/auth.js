@@ -25,3 +25,19 @@ export function setTimeStamp() {
   Cookies.set(timekey, Date.now())
 }
 
+export function converTree(list, pid) {
+  const arr = []
+  console.log(list)
+  list.forEach(item => {
+    if (item.pid === pid) {
+      //  嵌套循环
+      const children = converTree(list, item.id)
+      // 如果嵌套训话出来的里面还有内容，就将其加入到item
+      if (children.length > 0) {
+        item.children = children
+      }
+      arr.push(item)
+    }
+  })
+  return arr
+}
