@@ -1,7 +1,8 @@
 <template>
   <!-- 新增部门的弹层 -->
   <!-- 通过visible后面的Booblean值判断是否弹出 -->
-  <el-dialog title="新增部门" :visible="showDialog">
+  <!-- 这里的叉叉点击关闭动作 -->
+  <el-dialog title="新增部门" :visible="showDialog" @close="btnCancel">
     <!-- 表单组件  el-form   label-width设置label的宽度   -->
     <!-- 匿名插槽 -->
     <!-- ref="form" 定位表格,为全局校验做准备 -->
@@ -34,7 +35,7 @@
       <!-- 列被分为24 -->
       <el-col :span="6">
         <el-button type="primary" size="small" @click="btnOk">确定</el-button>
-        <el-button size="small">取消</el-button>
+        <el-button size="small" @click="btnCancel">取消</el-button>
       </el-col>
     </el-row>
   </el-dialog>
@@ -132,6 +133,11 @@ export default {
       } catch (error) {
         console.log(error)
       }
+    },
+    btnCancel() {
+      //  用饿了么组件封装好的函数对表单进行重置
+      this.$refs.form.resetFields()
+      this.$emit('update:showDialog', false)
     }
 
   }
