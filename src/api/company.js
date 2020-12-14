@@ -22,3 +22,11 @@ export function getDepartmentDetails(id) {
     url: '/company/department/' + id
   })
 }
+// 这个提交修改请求
+export function editDepartmnets(data) {
+  return request({
+    url: '/company/department/' + data.id,
+    method: 'put',
+    data
+  })
+}

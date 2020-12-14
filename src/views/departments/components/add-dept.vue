@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { department, addDepartments, getDepartmentDetails } from '@/api/company'
+import { department, addDepartments, getDepartmentDetails, editDepartmnets } from '@/api/company'
 import { getEmployeeSimple } from '@/api/employess'
 export default {
   props: {
@@ -64,20 +64,34 @@ export default {
         // 如果当前用户输入的名字, 在后台传回的数组中存在,
         // 并且这个存在同名的部门, pid 还要等于父部门的 id (data.id)
         // 应该报错
-        depts.some(item => item.name === value && item.pid === this.data.id && item.name === this.data.name)
-          ? callback(new Error('同一个部门下不能重名'))
-          : callback()
+        if (this.formData.id) {
+          depts.some((item) => item.id !== this.formData.id && item.name === value && item.pid === this.data.id)
+            ? callback(new Error('同一个部门下不能重名'))
+            : callback()
+        } else {
+          // 新增
+          console.log(this.data.name === value)
+          depts.some((item) => this.data.name === value || item.name === value && item.pid === this.data.id)
+            ? callback(new Error('同一个部门下不能重名'))
+            : callback()
+        }
       })
     }
     const validateDeptsCode = (rule, value, callback) => {
       department().then(data => {
-        // 拿到全部的部门数据
         const { depts } = data
-        // 如果重复了序号
-        // 应该报错
-        depts.some(item => item.code === value)
-          ? callback(new Error('不能重复部门序号'))
-          : callback()
+        if (this.formData.id) {
+          depts.some(item => item.id !== this.formData.id && item.code === value)
+            ? callback(new Error('不能重复部门序号'))
+            : callback()
+        } else {
+          // 拿到全部的部门数据
+          // 如果重复了序号
+          // 应该报错
+          depts.some(item => item.code === value)
+            ? callback(new Error('不能重复部门序号'))
+            : callback()
+        }
       })
     }
     return {
@@ -126,11 +140,18 @@ export default {
         const isValid = await this.$refs.form.validate()
         if (isValid) {
           console.log('校验通过, 可以发送请求了')
-          const data = { ...this.formData, pid: this.data.id }
-          console.log(data)
           // 将最终得到的data数据发送给服务器
-          await addDepartments(data)
-          console.log('新结果')
+          // 这里需要进行判断，如果this.fromData中有id，就是进行编辑，如果没有，则是新增数据
+          if (this.formData.id) {
+            // 调用修改方法
+            const res = await editDepartmnets(this.formData)
+            console.log(res)
+          } else {
+            const data = { ...this.formData, pid: this.data.id }
+            console.log(data)
+            await addDepartments(data)
+            console.log('新结果')
+          }
           this.$emit('update:showDialog', false)
           this.$emit('loadPage')
         }
