@@ -30,7 +30,7 @@
     <AddDepts
       :show-dialog.sync="showDialog"
       :data="node"
-      @load-page="loadPage"
+      @loadPage="loadPage"
     />
   </div>
 </template>

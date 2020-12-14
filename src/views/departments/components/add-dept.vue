@@ -27,7 +27,6 @@
       <el-form-item label="部门介绍" prop="introduce">
         <el-input v-model="formData.introduce" style="width:80%" placeholder="1-300个字符" type="textarea" :rows="3" />
       </el-form-item>
-      {{ formData.introdue }}
     </el-form>
 
     <!-- el-dialog有专门放置底部操作栏的 插槽  具名插槽 -->
@@ -122,9 +121,8 @@ export default {
         const isValid = await this.$refs.form.validate()
         if (isValid) {
           console.log('校验通过, 可以发送请求了')
-          console.log(this.formData)
           const data = { ...this.formData, pid: this.data.id }
-
+          console.log(data)
           // 将最终得到的data数据发送给服务器
           await addDepartments(data)
           console.log('新结果')
