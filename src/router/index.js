@@ -72,13 +72,13 @@ import settingRouter from './modules/setting'
 import socialRouter from './modules/social'
 
 const asyncRoutes = [
-  approvalsRouter,
   departmentsRouter,
+  settingRouter,
+  approvalsRouter,
   employeesRouter,
   permissionRouter,
   attendancesRouter,
   salarysRouter,
-  settingRouter,
   socialRouter
 ]
 
