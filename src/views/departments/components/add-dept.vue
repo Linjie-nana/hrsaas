@@ -2,7 +2,7 @@
   <!-- 新增部门的弹层 -->
   <!-- 通过visible后面的Booblean值判断是否弹出 -->
   <!-- 这里的叉叉点击关闭动作 -->
-  <el-dialog title="新增部门" :visible="showDialog" @close="btnCancel">
+  <el-dialog :title="title" :visible="showDialog" @close="btnCancel">
     <!-- 表单组件  el-form   label-width设置label的宽度   -->
     <!-- 匿名插槽 -->
     <!-- ref="form" 定位表格,为全局校验做准备 -->
@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { department, addDepartments } from '@/api/company'
+import { department, addDepartments, getDepartmentDetails } from '@/api/company'
 import { getEmployeeSimple } from '@/api/employess'
 export default {
   props: {
@@ -64,7 +64,7 @@ export default {
         // 如果当前用户输入的名字, 在后台传回的数组中存在,
         // 并且这个存在同名的部门, pid 还要等于父部门的 id (data.id)
         // 应该报错
-        depts.some(item => item.name === value && item.pid === this.data.id)
+        depts.some(item => item.name === value && item.pid === this.data.id && item.name === this.data.name)
           ? callback(new Error('同一个部门下不能重名'))
           : callback()
       })
@@ -111,6 +111,11 @@ export default {
       }
     }
   },
+  computed: {
+    title() {
+      return this.formData.id ? '编辑部门' : '新增部门'
+    }
+  },
   methods: {
     async getEmployeeSimple() {
       this.people = await getEmployeeSimple()
@@ -135,8 +140,19 @@ export default {
     },
     btnCancel() {
       //  用饿了么组件封装好的函数对表单进行重置
+      this.formData = {
+        name: '',
+        code: '',
+        manager: '',
+        introduce: ''
+      }
       this.$refs.form.resetFields()
       this.$emit('update:showDialog', false)
+    },
+    async getDepartmentDetails() {
+      const result = await getDepartmentDetails(this.data.id)
+      console.log(result, 11111111111)
+      this.formData = result
     }
 
   }

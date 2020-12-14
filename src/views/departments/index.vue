@@ -29,6 +29,7 @@
     <!-- 将showDialog的状态传到弹框子件中 -->
     <!-- 从弹窗组件传入到主页中的loadpage动作，使页面重新加载 -->
     <AddDepts
+      ref="edit"
       :show-dialog.sync="showDialog"
       :data="node"
       @loadPage="loadPage"
@@ -91,8 +92,12 @@ export default {
       this.showDialog = true
     },
     editDepts(node) {
-      this.node = node
       this.showDialog = true
+      this.node = node
+      // 如果改变了showDialog，那么就直接弹出框了，这样数据就来不及渲染出来，所以需要nextTick
+      this.$nextTick(() => {
+        this.$refs.edit.getDepartmentDetails()
+      })
     }
   }
 
