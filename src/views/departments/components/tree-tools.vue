@@ -16,7 +16,7 @@
             <!-- 下拉菜单 -->
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="add">添加子部门</el-dropdown-item>
-              <el-dropdown-item v-if="!isRoot" command="edit">查看部门</el-dropdown-item>
+              <el-dropdown-item v-if="!isRoot" command="edit">编辑部门</el-dropdown-item>
               <el-dropdown-item v-if="!isRoot" command="del">删除部门</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -47,7 +47,7 @@ export default {
         this.$emit('addDepts', this.data)
       }
       if (data === 'edit') {
-        // 修改
+        this.$emit('editDepts', this.data)
       }
       if (data === 'del') {
         this.$confirm('是否确认删除该部门?', '删除部门', {

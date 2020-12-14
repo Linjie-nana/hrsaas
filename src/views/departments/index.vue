@@ -20,6 +20,7 @@
             :data="data"
             @addDepts="addDepts"
             @delDepts="loadPage"
+            @editDepts="editDepts"
           />
         </el-tree>
       </el-card>
@@ -87,7 +88,10 @@ export default {
     },
     addDepts(node) {
       this.node = node
-      console.log(node)
+      this.showDialog = true
+    },
+    editDepts(node) {
+      this.node = node
       this.showDialog = true
     }
   }
