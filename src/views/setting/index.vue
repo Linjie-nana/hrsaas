@@ -23,7 +23,8 @@
               <el-table-column label="操作">
                 <!-- 插槽导入按钮 -->
                 <template slot-scope="scope">
-                  <el-button type="text" @click="editRole">
+                  <!-- {{ scope.row }} -->
+                  <el-button type="text" @click="editRole(scope.row.id)">
                     编辑角色
                   </el-button>
                   <el-button type="text" @click="delRole(scope.row.id)">
@@ -101,7 +102,7 @@
 </template>
 
 <script>
-import { getRoleList, getCompanyDetail, delRole } from '@/api/setting'
+import { getRoleList, getCompanyDetail, delRole, getRoleDetail } from '@/api/setting'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -157,6 +158,7 @@ export default {
       const { rows, total } = await getRoleList(this.pageSetting)
       this.roleList = rows
       this.pageSetting.total = total
+      console.log(this.roleList)
     },
     currentChange(newPage) {
       this.pageSetting.page = newPage
@@ -178,7 +180,13 @@ export default {
         console.log(err)
       }
     },
-    editRole() {
+    async editRole(data) {
+      const result = await getRoleDetail(data)
+      // this.roleFormData.name = name
+      // this.roleFormData.description = description
+      // console.log(result)
+      this.roleFormData = result
+
       this.showDialog = true
     },
     // 公司请求
