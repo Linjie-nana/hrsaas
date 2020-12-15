@@ -86,7 +86,6 @@ export default {
       const { rows, total } = await getRoleList(this.pageSetting)
       this.roleList = rows
       this.pageSetting.total = total
-      console.log(this.pageSetting.total)
     }
   }
 }
