@@ -23,7 +23,7 @@
               <el-table-column label="操作">
                 <!-- 插槽导入按钮 -->
                 <template slot-scope="scope">
-                  <el-button type="text">
+                  <el-button type="text" @click="editRole">
                     编辑角色
                   </el-button>
                   <el-button type="text" @click="delRole(scope.row.id)">
@@ -76,6 +76,26 @@
           </el-tab-pane>
         </el-tabs>
       </el-card>
+      <!-- 这里是弹框编辑角色 -->
+      <el-dialog
+        title="新增角色"
+        :visible.sync="showDialog"
+        width="50%"
+      >
+        <el-form label-width="80px">
+          <el-form-item label="角色名称">
+            <el-input v-model="roleFormData.name" />
+          </el-form-item>
+          <el-form-item label="角色描述">
+            <el-input v-model="roleFormData.description" />
+          </el-form-item>
+        </el-form>
+
+        <template slot="footer">
+          <el-button>取消</el-button>
+          <el-button type="primary">确认</el-button>
+        </template>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -87,13 +107,25 @@ import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
+      // 弹框状态
+      showDialog: false,
+      // 弹框数据
+      roleFormData: {
+        name: '',
+        description: ''
+      },
+
       activeName: 'role',
+
+      // 角色数据列表
       roleList: [],
+      // 获取数据时提交的参数
       pageSetting: {
         page: 1,
         pagesize: 2,
         total: 0
       },
+      // 公司参数
       companyDetail: {}
 
     }
@@ -145,6 +177,9 @@ export default {
       } catch (err) {
         console.log(err)
       }
+    },
+    editRole() {
+      this.showDialog = true
     },
     // 公司请求
     async getCompanyDetail() {
