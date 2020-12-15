@@ -14,9 +14,7 @@
             <el-table :data="roleList" style="width: 100%">
               <!-- <el-table-column prop="date" label="序号" /> -->
               <el-table-column label="序号">
-                <template slot-scope="scope">
-                  {{ scope.$index + 1 }}
-                </template>
+                <template slot-scope="scope">{{ scope.$index + 1 }}</template>
               </el-table-column>
               <el-table-column prop="name" label="角色名" />
               <el-table-column prop="description" label="描述" />
@@ -24,12 +22,8 @@
                 <!-- 插槽导入按钮 -->
                 <template slot-scope="scope">
                   <!-- {{ scope.row }} -->
-                  <el-button type="text" @click="editRole(scope.row.id)">
-                    编辑角色
-                  </el-button>
-                  <el-button type="text" @click="delRole(scope.row.id)">
-                    删除角色
-                  </el-button>
+                  <el-button type="text" @click="editRole(scope.row.id)">编辑角色</el-button>
+                  <el-button type="text" @click="delRole(scope.row.id)">删除角色</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -78,11 +72,7 @@
         </el-tabs>
       </el-card>
       <!-- 这里是弹框编辑角色 -->
-      <el-dialog
-        title="新增角色"
-        :visible.sync="showDialog"
-        width="50%"
-      >
+      <el-dialog title="新增角色" :visible.sync="showDialog" width="50%">
         <el-form ref="roleForm" label-width="80px" :model="roleFormData" :rules="rules">
           <el-form-item label="角色名称" prop="name">
             <el-input v-model="roleFormData.name" />
@@ -102,7 +92,13 @@
 </template>
 
 <script>
-import { getRoleList, getCompanyDetail, delRole, getRoleDetail, updateRole } from '@/api/setting'
+import {
+  getRoleList,
+  getCompanyDetail,
+  delRole,
+  getRoleDetail,
+  updateRole
+} from '@/api/setting'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -229,5 +225,4 @@ export default {
 </script>
 
   <style>
-
-  </style>
+</style>
