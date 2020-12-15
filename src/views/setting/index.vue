@@ -83,18 +83,18 @@
         :visible.sync="showDialog"
         width="50%"
       >
-        <el-form label-width="80px">
-          <el-form-item label="角色名称">
+        <el-form ref="roleForm" label-width="80px" :model="roleFormData" :rules="rules">
+          <el-form-item label="角色名称" prop="name">
             <el-input v-model="roleFormData.name" />
           </el-form-item>
-          <el-form-item label="角色描述">
+          <el-form-item label="角色描述" prop="description">
             <el-input v-model="roleFormData.description" />
           </el-form-item>
         </el-form>
 
         <template slot="footer">
           <el-button>取消</el-button>
-          <el-button type="primary">确认</el-button>
+          <el-button type="primary" @click="btnOk">确认</el-button>
         </template>
       </el-dialog>
     </div>
@@ -102,7 +102,7 @@
 </template>
 
 <script>
-import { getRoleList, getCompanyDetail, delRole, getRoleDetail } from '@/api/setting'
+import { getRoleList, getCompanyDetail, delRole, getRoleDetail, updateRole } from '@/api/setting'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -114,6 +114,17 @@ export default {
       roleFormData: {
         name: '',
         description: ''
+      },
+      // 验证规则
+      rules: {
+        name: [
+          { required: true, message: '角色名称不能为空', trigger: 'blur' },
+          { min: 2, max: 12, message: '2-12个字符之间', trigger: 'blur' }
+        ],
+        description: [
+          { required: true, message: '角色描述不能为空', trigger: 'blur' },
+          { min: 5, max: 100, message: '2-100字符之间', trigger: 'blur' }
+        ]
       },
 
       activeName: 'role',
@@ -128,7 +139,6 @@ export default {
       },
       // 公司参数
       companyDetail: {}
-
     }
   },
   computed: {
@@ -154,6 +164,7 @@ export default {
     this.getRoleList()
   },
   methods: {
+    // 获取角色列表的
     async getRoleList() {
       const { rows, total } = await getRoleList(this.pageSetting)
       this.roleList = rows
@@ -168,6 +179,7 @@ export default {
       this.pageSetting.pagesize = newPagesiez
       this.getRoleList()
     },
+
     // 删除角色
     async delRole(id) {
       try {
@@ -189,11 +201,28 @@ export default {
 
       this.showDialog = true
     },
+
     // 公司请求
     async getCompanyDetail() {
       const data = await getCompanyDetail(this.companyId)
       console.log(data)
       this.companyDetail = data
+    },
+
+    async btnOk() {
+      try {
+        const isValid = await this.$refs.roleForm.validate()
+        if (isValid) {
+          await updateRole(this.roleFormData)
+          this.$message.success('修改成功')
+          // 顺便关闭窗口
+          this.showDialog = false
+          // 重加载数据
+          this.getRoleList()
+        }
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 }
