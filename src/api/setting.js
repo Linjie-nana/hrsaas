@@ -13,3 +13,10 @@ export function getCompanyDetail(campanyId) {
     url: '/company/' + campanyId
   })
 }
+// 删除角色
+export function delRole(roleId) {
+  return request({
+    url: '/sys/role/' + roleId,
+    method: 'delete'
+  })
+}
