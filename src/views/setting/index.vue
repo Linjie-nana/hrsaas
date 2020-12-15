@@ -71,8 +71,9 @@
           </el-tab-pane>
         </el-tabs>
       </el-card>
+
       <!-- 这里是弹框编辑角色 -->
-      <el-dialog title="这里有待判断" :visible.sync="showDialog" width="50%">
+      <el-dialog :title="title" :visible.sync="showDialog" width="50%" @close="btnCancel">
         <el-form ref="roleForm" label-width="80px" :model="roleFormData" :rules="rules">
           <el-form-item label="角色名称" prop="name">
             <el-input v-model="roleFormData.name" />
@@ -83,7 +84,7 @@
         </el-form>
 
         <template slot="footer">
-          <el-button>取消</el-button>
+          <el-button @click="btnCancel">取消</el-button>
           <el-button type="primary" @click="btnOk">确认</el-button>
         </template>
       </el-dialog>
@@ -123,6 +124,8 @@ export default {
           { min: 5, max: 100, message: '2-100字符之间', trigger: 'blur' }
         ]
       },
+      // 弹出款标题判断
+      title: '',
 
       activeName: 'role',
 
@@ -192,6 +195,7 @@ export default {
 
     // 编辑角色弹出框
     async editRole(data) {
+      this.title = '编辑角色'
       const result = await getRoleDetail(data)
       // this.roleFormData.name = name
       // this.roleFormData.description = description
@@ -203,6 +207,7 @@ export default {
 
     // 新增角色弹出框
     addRole() {
+      this.title = '新增角色'
       this.showDialog = true
     },
 
@@ -237,6 +242,18 @@ export default {
       } catch (error) {
         console.log(error)
       }
+    },
+
+    // 关闭按钮操作
+    btnCancel() {
+      // 重置this.roleFormData，因为有form表单清除方法只会清除表格内绑定的数据
+      this.roleFormData = {
+        name: '',
+        description: ''
+      }
+      // elemt form表单清除方法
+      this.$refs.roleForm.resetFields()
+      this.showDialog = false
     }
   }
 }
