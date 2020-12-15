@@ -34,3 +34,11 @@ export function updateRole(data) {
     data
   })
 }
+// 新增
+export function addRole(data) {
+  return request({
+    url: '/sys/role',
+    method: 'post',
+    data
+  })
+}

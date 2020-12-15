@@ -8,7 +8,7 @@
             <!-- 角色管理 -->
             <el-row type="flex" justify="center" align="middle" style="height: 60px">
               <el-col>
-                <el-button size="small" type="primary">新增角色</el-button>
+                <el-button size="small" type="primary" @click="addRole">新增角色</el-button>
               </el-col>
             </el-row>
             <el-table :data="roleList" style="width: 100%">
@@ -72,7 +72,7 @@
         </el-tabs>
       </el-card>
       <!-- 这里是弹框编辑角色 -->
-      <el-dialog title="新增角色" :visible.sync="showDialog" width="50%">
+      <el-dialog title="这里有待判断" :visible.sync="showDialog" width="50%">
         <el-form ref="roleForm" label-width="80px" :model="roleFormData" :rules="rules">
           <el-form-item label="角色名称" prop="name">
             <el-input v-model="roleFormData.name" />
@@ -97,7 +97,8 @@ import {
   getCompanyDetail,
   delRole,
   getRoleDetail,
-  updateRole
+  updateRole,
+  addRole
 } from '@/api/setting'
 import { mapGetters } from 'vuex'
 
@@ -188,6 +189,8 @@ export default {
         console.log(err)
       }
     },
+
+    // 编辑角色弹出框
     async editRole(data) {
       const result = await getRoleDetail(data)
       // this.roleFormData.name = name
@@ -198,6 +201,11 @@ export default {
       this.showDialog = true
     },
 
+    // 新增角色弹出框
+    addRole() {
+      this.showDialog = true
+    },
+
     // 公司请求
     async getCompanyDetail() {
       const data = await getCompanyDetail(this.companyId)
@@ -205,11 +213,21 @@ export default {
       this.companyDetail = data
     },
 
+    // 弹框提交，涉及到编辑角色以及新增角色
     async btnOk() {
       try {
         const isValid = await this.$refs.roleForm.validate()
         if (isValid) {
-          await updateRole(this.roleFormData)
+          // 根据roleFormData这个数据判断编辑和添加操作
+          if (this.roleFormData.id) {
+            // 编辑
+            await updateRole(this.roleFormData)
+            this.$message.success('修改成功')
+          } else {
+            // 添加
+            await addRole(this.roleFormData)
+            this.$message.success('添加成功')
+          }
           this.$message.success('修改成功')
           // 顺便关闭窗口
           this.showDialog = false
