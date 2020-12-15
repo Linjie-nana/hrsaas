@@ -50,19 +50,19 @@
             />
             <el-form label-width="120px" style="margin-top:50px">
               <el-form-item label="企业名称">
-                <el-input disabled style="width: 400px" />
+                <el-input v-model="companyDetail.name" disabled style="width: 400px" />
               </el-form-item>
               <el-form-item label="公司地址">
-                <el-input disabled style="width: 400px" />
+                <el-input v-model="companyDetail.companyAddress" disabled style="width: 400px" />
               </el-form-item>
               <el-form-item label="公司电话">
-                <el-input disabled style="width: 400px" />
+                <el-input v-model="companyDetail.companyPhone" disabled style="width: 400px" />
               </el-form-item>
               <el-form-item label="邮箱">
-                <el-input disabled style="width: 400px" />
+                <el-input v-model="companyDetail.mailbox" disabled style="width: 400px" />
               </el-form-item>
               <el-form-item label="备注">
-                <el-input disabled style="width: 400px" />
+                <el-input v-model="companyDetail.remarks" disabled style="width: 400px" />
               </el-form-item>
             </el-form>
           </el-tab-pane>
@@ -85,7 +85,9 @@ export default {
         page: 1,
         pagesize: 2,
         total: 0
-      }
+      },
+      companyDetail: {}
+
     }
   },
   computed: {
@@ -109,7 +111,6 @@ export default {
   },
   created() {
     this.getRoleList()
-    this.getCompanyDetail()
   },
   methods: {
     async getRoleList() {
@@ -127,12 +128,9 @@ export default {
     },
     // 公司请求
     async getCompanyDetail() {
-      // setTimeout(() => {
-      //   console.log('公司id')
-      //   console.log(this.$store.getters.companyId)
-      // }, 200)
       const data = await getCompanyDetail(this.companyId)
       console.log(data)
+      this.companyDetail = data
     }
   }
 }
