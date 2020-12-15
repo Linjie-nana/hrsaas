@@ -25,10 +25,18 @@
               </el-table-column>
             </el-table>
             <el-row type="flex" justify="end" align="middle" style="height: 60px;">
-              <!-- 页面插件 -->
+              <!-- 翻页面插件 -->
+              <!-- total：有多少条数据  -->
+              <!-- page-size:每页显示的数量 -->
+              <!-- size-change： page-size改变后发送请求重新获取数据 -->
+              <!-- current-change改变当前页数量，方法是重新发送一次函数获取新页面 -->
               <el-pagination
-                layout="prev, pager, next"
+                layout="prev, pager,next, sizes,jumper"
                 :total="pageSetting.total"
+                :page-size="pageSetting.pagesize"
+                :page-sizes="[2,5,10]"
+                @current-change="currentChange"
+                @size-change="sizeChange"
               />
             </el-row>
           </el-tab-pane>
@@ -86,6 +94,14 @@ export default {
       const { rows, total } = await getRoleList(this.pageSetting)
       this.roleList = rows
       this.pageSetting.total = total
+    },
+    currentChange(newPage) {
+      this.pageSetting.page = newPage
+      this.getRoleList()
+    },
+    sizeChange(newPagesiez) {
+      this.pageSetting.pagesize = newPagesiez
+      this.getRoleList()
     }
   }
 }
