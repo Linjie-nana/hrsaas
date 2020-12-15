@@ -73,7 +73,9 @@
 </template>
 
 <script>
-import { getRoleList } from '@/api/setting'
+import { getRoleList, getCompanyDetail } from '@/api/setting'
+import { mapGetters } from 'vuex'
+
 export default {
   data() {
     return {
@@ -86,8 +88,28 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters(['companyId'])
+  },
+  watch: {
+    // 1. 别的页面跳进来 id 不变
+    // 2. 当前页面刷新, id 会从五到有
+    companyId: {
+      handler() {
+        // 判断当前的 companyId 是否存在
+        // 如果在则发请求
+        if (this.companyId) {
+          this.getCompanyDetail()
+        }
+      },
+      // 本来watch 是要数据发生变化时才会触发
+      // 我希望页面一进来不管数据会不会变都会触发
+      immediate: true
+    }
+  },
   created() {
     this.getRoleList()
+    this.getCompanyDetail()
   },
   methods: {
     async getRoleList() {
@@ -102,6 +124,15 @@ export default {
     sizeChange(newPagesiez) {
       this.pageSetting.pagesize = newPagesiez
       this.getRoleList()
+    },
+    // 公司请求
+    async getCompanyDetail() {
+      // setTimeout(() => {
+      //   console.log('公司id')
+      //   console.log(this.$store.getters.companyId)
+      // }, 200)
+      const data = await getCompanyDetail(this.companyId)
+      console.log(data)
     }
   }
 }
