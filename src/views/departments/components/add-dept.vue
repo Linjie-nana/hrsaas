@@ -6,7 +6,7 @@
     <!-- 表单组件  el-form   label-width设置label的宽度   -->
     <!-- 匿名插槽 -->
     <!-- ref="form" 定位表格,为全局校验做准备 -->
-    <el-form ref="form" label-width="120px" :rules="rules" :model="formData">
+    <el-form v-if="showDialog" ref="form" label-width="120px" :rules="rules" :model="formData">
       <el-form-item label="部门名称" prop="name">
         <el-input v-model="formData.name" style="width:80%" placeholder="1-50个字符" />
       </el-form-item>
