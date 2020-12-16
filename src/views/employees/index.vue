@@ -30,13 +30,13 @@
             </template>
           </el-table-column>
           <el-table-column label="操作" sortable="" fixed="right" width="280">
-            <template>
+            <template slot-scope="{ row }">
               <el-button type="text" size="small">查看</el-button>
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
               <el-button type="text" size="small">角色</el-button>
-              <el-button type="text" size="small">删除</el-button>
+              <el-button type="text" size="small" @click="delEmployee(row.id)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { getUserList } from '@/api/employess'
+import { getUserList, delEmployee } from '@/api/employess'
 import EmployeeEnum from '@/api/constant/employees'
 export default {
   data() {
@@ -93,11 +93,17 @@ export default {
       const obj = EmployeeEnum.hireType.find(item => item.id === cellValue)
       // 防御性编程，如过得到的对象不存在，就显示为不存在。
       return obj ? obj.value : '不存在'
+    },
+    async delEmployee(id) {
+      try {
+        await this.$confirm('确定删除')
+        await delEmployee(id)
+        this.getUserList()
+          .this.$message.success('删除成功')
+      } catch (err) {
+        console.log(err)
+      }
     }
-    // formatTimeOfEntry(row, column, cellValue, index) {
-    //   // 更具t截取时间字符串，返回，如果不存在则显示不存在
-    //   return cellValue.split('T')[0] || '不存在'
-    // }
   }
 
 }

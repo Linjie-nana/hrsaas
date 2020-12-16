@@ -12,3 +12,10 @@ export function getUserList(params) {
     params
   })
 }
+// 删除员工接口
+export function delEmployee(id) {
+  return request({
+    url: `/sys/user/${id}`,
+    method: 'delete'
+  })
+}
