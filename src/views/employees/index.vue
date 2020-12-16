@@ -12,9 +12,9 @@
       </PageTools>
 
       <el-card>
-        <el-table :data="list" border>
+        <el-table :data="list" border label="序号">
           <el-table-column>
-            <template slot-scope="{ $index }">{{ $index + 1 }}</template>
+            <template slot-scope="{ $index }">{{ (pageSetting.page-1)*pageSetting.size + 1 + $index }}</template>
           </el-table-column>
           <el-table-column label="姓名" prop="username" sortable="" />
           <el-table-column label="工号" prop="workNumber" sortable="" />
