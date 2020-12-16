@@ -18,7 +18,7 @@
           </el-table-column>
           <el-table-column label="姓名" prop="username" sortable="" />
           <el-table-column label="工号" prop="workNumber" sortable="" />
-          <el-table-column label="聘用形式" prop="formOfEmployment" sortable="" />
+          <el-table-column label="聘用形式" prop="formOfEmployment" sortable="" :formatter="formatEmployment" />
           <el-table-column label="部门" prop="departmentName" sortable="" />
           <el-table-column label="入职时间" prop="timeOfEntry" sortable="" />
           <el-table-column label="账户状态" prop="enableState" sortable="" />
@@ -50,6 +50,7 @@
 
 <script>
 import { getUserList } from '@/api/employess'
+import EmployeeEnum from '@/api/constant/employees'
 export default {
   data() {
     return {
@@ -82,6 +83,13 @@ export default {
     sizeChange(newSize) {
       this.pageSetting.size = newSize
       this.getUserList()
+    },
+    // 格式化聘用显示
+    formatEmployment(row, column, cellValue, index) {
+      // 调用枚举对应对象，根据编辑的目标对象cellValue进行比较再返回
+      const obj = EmployeeEnum.hireType.find(item => item.id === cellValue)
+      // 防御性编程，如过得到的对象不存在，就显示为不存在。
+      return obj ? obj.value : '不存在'
     }
   }
 
