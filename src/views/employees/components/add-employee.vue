@@ -17,7 +17,8 @@
         <el-input v-model="formData.workNumber" style="width:50%" placeholder="请输入工号" />
       </el-form-item>
       <el-form-item label="部门" prop="departmentName">
-        <el-input v-model="formData.departmentName" style="width:50%" placeholder="请选择部门" />
+        <el-input v-model="formData.departmentName" style="width:50%" placeholder="请选择部门" @focus="getDepartments" />
+        <el-tree v-if="treeData.length>0" :data="treeData" :props="{label: 'name'}" :default-expand-all="true" />
       </el-form-item>
       <el-form-item label="转正时间" prop="timeOfEntry">
         <el-date-picker v-model="formData.correctionTime" style="width:50%" placeholder="请选择转正时间" />
@@ -37,6 +38,10 @@
 </template>
 
 <script>
+// 获取的公司部门数据
+import { department } from '@/api/company'
+// 导入数据后的构建树
+import { converTree } from '@/utils/auth'
 export default {
   props: {
     showDialog: {
@@ -46,6 +51,9 @@ export default {
   },
   data() {
     return {
+      // 部门树结构选项
+      treeData: [],
+
       // 提交的数据
       formData: {
         username: '',
@@ -68,6 +76,13 @@ export default {
         departmentName: [{ required: true, message: '部门不能为空', trigger: 'change' }],
         timeOfEntry: [{ required: true, message: '入职时间', trigger: 'blur' }]
       }
+    }
+  },
+  methods: {
+    async getDepartments() {
+      const { depts } = await department()
+      // 这里拿到的数据是扁平的, 需要递归处理成属性组件
+      this.treeData = converTree(depts, '')
     }
   }
 }

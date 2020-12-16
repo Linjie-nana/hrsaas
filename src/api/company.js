@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+// 获取公司信息
 export function department() {
   return request({
     url: '/company/department'
@@ -17,6 +18,7 @@ export function addDepartments(data) {
     data
   })
 }
+
 export function getDepartmentDetails(id) {
   return request({
     url: '/company/department/' + id
