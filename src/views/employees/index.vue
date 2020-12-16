@@ -24,7 +24,11 @@
             <template slot-scope="{row}">{{ row.timeOfEntry | formatDate }}</template>
           </el-table-column>
 
-          <el-table-column label="账户状态" prop="enableState" sortable="" />
+          <el-table-column label="账户状态" sortable="" align="center">
+            <template slot-scope="{row}">
+              <el-switch :value="row.enableState===1" />
+            </template>
+          </el-table-column>
           <el-table-column label="操作" sortable="" fixed="right" width="280">
             <template>
               <el-button type="text" size="small">查看</el-button>
@@ -35,7 +39,7 @@
               <el-button type="text" size="small">删除</el-button>
             </template>
           </el-table-column>
-        </el-table>
+          </el-table-column></el-table>
         <el-row type="flex" justify="end" align="middle" style="height: 60px;">
           <el-pagination
             layout="total, sizes, prev, pager, next, jumper"
