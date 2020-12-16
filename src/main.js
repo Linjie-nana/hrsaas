@@ -29,6 +29,10 @@ Vue.directive('imageerror', imageerror)
 import Components from '@/components'
 Vue.use(Components)
 
+// 导入全局过滤器 时间过滤
+import { formatDate } from '@/filters'
+Vue.filter('formatDate', formatDate)
+
 Vue.config.productionTip = false
 
 new Vue({
