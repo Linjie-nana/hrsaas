@@ -30,8 +30,15 @@ import Components from '@/components'
 Vue.use(Components)
 
 // 导入全局过滤器 时间过滤
-import { formatDate } from '@/filters'
-Vue.filter('formatDate', formatDate)
+// import { formatDate } from '@/filters'
+// Vue.filter('formatDate', formatDate)
+// 导入全局过滤器，遍历全部过滤器
+import * as filter from '@/filters'
+for (var key in filter) {
+  const filterName = key
+  const filterFunction = filter[key]
+  Vue.filter(filterName, filterFunction)
+}
 
 Vue.config.productionTip = false
 

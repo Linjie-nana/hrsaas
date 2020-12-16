@@ -39,7 +39,7 @@
               <el-button type="text" size="small">删除</el-button>
             </template>
           </el-table-column>
-          </el-table-column></el-table>
+        </el-table>
         <el-row type="flex" justify="end" align="middle" style="height: 60px;">
           <el-pagination
             layout="total, sizes, prev, pager, next, jumper"
