@@ -1,6 +1,6 @@
 <template>
   <el-dialog title="新增员工" :visible="showDialog" @close="cloesBtn">
-    <el-form label-width="120px" :model="formData" :rules="rules">
+    <el-form ref="addEmployee" label-width="120px" :model="formData" :rules="rules">
       <el-form-item label="姓名" prop="username">
         <el-input v-model="formData.username" style="width:50%" placeholder="请输入姓名" />
       </el-form-item>
@@ -11,7 +11,9 @@
         <el-date-picker v-model="formData.timeOfEntry" style="width:50%" placeholder="请选择入职时间" />
       </el-form-item>
       <el-form-item label="聘用形式" prop="formOfEmployment">
-        <el-select v-model="formData.formatEmployment" style="width:50%" placeholder="请选择" />
+        <el-select v-model="formData.formOfEmployment" style="width:50%" placeholder="请选择">
+          <el-option v-for="item in employees.hireType" :key="item.id" :label="item.value" :value="item.id" />
+        </el-select>
       </el-form-item>
       <el-form-item label="工号" prop="workNumber">
         <el-input v-model="formData.workNumber" style="width:50%" placeholder="请输入工号" />
@@ -43,7 +45,7 @@
       <el-row type="flex" justify="center">
         <el-col :span="6">
           <el-button size="small" @click="cloesBtn">取消</el-button>
-          <el-button type="primary" size="small">确定</el-button>
+          <el-button type="primary" size="small" @click="btnOk">确定</el-button>
         </el-col>
       </el-row>
     </template>
@@ -55,7 +57,10 @@
 import { department } from '@/api/company'
 // 导入数据后的构建树
 import { converTree } from '@/utils/auth'
-
+// 引入枚举以便遍历入职形式
+import employees from '@/api/constant/employees'
+// 引入新增用户方法
+import { addUser } from '@/api/employess'
 export default {
   props: {
     showDialog: {
@@ -67,7 +72,7 @@ export default {
     return {
       // 部门树结构选项
       treeData: [],
-
+      employees,
       // 提交的数据
       formData: {
         username: '',
@@ -121,7 +126,20 @@ export default {
       this.treeData = []
     },
     cloesBtn() {
-      this.showDialog = false
+      this.$parent.showDialog = false
+    },
+    async btnOk() {
+      try {
+        const gogogo = await this.$refs.addEmployee.validate()
+        if (gogogo) {
+          await addUser(this.formData)
+          this.$message.success('✌')
+          this.$parent.getUserList()
+          this.$parent.showDialog = false
+        }
+      } catch (err) {
+        console.log(err)
+      }
     }
   }
 }
@@ -139,8 +157,7 @@ export default {
     overflow: scroll;
     width: 315px;
     height: 220px;
-
-}
+    }
 }
 
 </style>
