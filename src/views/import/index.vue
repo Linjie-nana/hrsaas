@@ -12,8 +12,33 @@ export default {
       // 可以获取到表头, 可以获取到数据行
       console.log(header)
       console.log(results)
+
+      // 创建模版
+      const dictionary = {
+        '入职日期': 'timeOfEntry',
+        '手机号': 'mobile',
+        '姓名': 'username',
+        '转正日期': 'correctionTime',
+        '工号': 'workNumber'
+      }
+
+      const data = results.map(item => {
+        return this.cnToEn(item, dictionary)
+      })
+      console.log(data)
+    },
+    // 封装一个函数，将中文字段通过模版转换为英文
+    cnToEn(item, dictionary) {
+      const data = {}
+      for (const key in item) {
+        const newKey = dictionary[key]
+        const value = item[key]
+        data[newKey] = value
+      }
+      return data
     }
   }
+
 }
 </script>
 
