@@ -26,7 +26,15 @@ export default {
       const data = results.map(item => {
         return this.cnToEn(item, dictionary)
       })
-      await importEmployees(data)
+      if (this.$route.query.type === 'employee') {
+        await importEmployees(data)
+        this.$message.success('导入成功')
+        setTimeout(() => {
+          this.$router.back()
+        }, 800)
+      } else {
+        this.$message.error('未知导入类型')
+      }
       console.log(data)
     },
 

@@ -5,7 +5,7 @@
       <PageTools :show-before="true">
         <span slot="before">{{ pageSetting.total }}条信息</span>
         <span slot="after">
-          <el-button size="small" type="warning">导入</el-button>
+          <el-button size="small" type="warning" @click="$router.push('/import?type=employee')">导入</el-button>
           <el-button size="small" type="danger">导出</el-button>
           <el-button type="primary" size="small" @click="showDialog = !showDialog">新增员工</el-button>
 
