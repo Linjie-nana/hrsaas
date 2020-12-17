@@ -12,7 +12,12 @@
       </el-form-item>
       <el-form-item label="聘用形式" prop="formOfEmployment">
         <el-select v-model="formData.formOfEmployment" style="width:50%" placeholder="请选择">
-          <el-option v-for="item in employees.hireType" :key="item.id" :label="item.value" :value="item.id" />
+          <el-option
+            v-for="item in employees.hireType"
+            :key="item.id"
+            :label="item.value"
+            :value="item.id"
+          />
         </el-select>
       </el-form-item>
       <el-form-item label="工号" prop="workNumber">
@@ -35,7 +40,7 @@
           />
         </div>
       </el-form-item>
-      <el-form-item label="转正时间" prop="timeOfEntry">
+      <el-form-item label="转正时间" prop="correctionTime">
         <el-date-picker v-model="formData.correctionTime" style="width:50%" placeholder="请选择转正时间" />
       </el-form-item>
     </el-form>
@@ -69,6 +74,19 @@ export default {
     }
   },
   data() {
+    const checkTime = (rule, value, callback) => {
+      if (!this.formData.timeOfEntry || !this.formData.correctionTime) {
+        callback()
+      } else {
+        const timeOfEntry = this.formData.timeOfEntry.getTime()
+        console.log(timeOfEntry)
+        const correctionTime = this.formData.correctionTime.getTime()
+        console.log(correctionTime)
+        timeOfEntry < correctionTime
+          ? callback()
+          : callback(new Error('入职前不能转正'))
+      }
+    }
     return {
       // 部门树结构选项
       treeData: [],
@@ -109,7 +127,21 @@ export default {
         departmentName: [
           { required: true, message: '部门不能为空', trigger: 'change' }
         ],
-        timeOfEntry: [{ required: true, message: '入职时间', trigger: 'blur' }]
+        timeOfEntry: [
+          { required: true, message: '入职时间', trigger: 'blur' },
+          { trigger: 'change', validator: checkTime },
+          { trigger: 'blur', validator: checkTime }
+        ],
+        correctionTime: [
+          {
+            trigger: 'change',
+            validator: checkTime
+          },
+          {
+            trigger: 'blur',
+            validator: checkTime
+          }
+        ]
       }
     }
   },
@@ -158,18 +190,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.bigbox{
+.bigbox {
   position: absolute;
   z-index: 999;
-   width: 300px;
-   height: 200px;
-   overflow: hidden;
-   border: 1px solid #ccc;
-   .treeData {
+  width: 300px;
+  height: 200px;
+  overflow: hidden;
+  border: 1px solid #ccc;
+  .treeData {
     overflow: scroll;
     width: 315px;
     height: 220px;
-    }
+  }
 }
-
 </style>
