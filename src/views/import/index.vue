@@ -5,9 +5,10 @@
 </template>
 
 <script>
+import { importEmployees } from '@/api/employess'
 export default {
   methods: {
-    onSuccess({ header, results }) {
+    async onSuccess({ header, results }) {
       // 这个函数是excel文件解析完毕之后触发的
       // 可以获取到表头, 可以获取到数据行
       console.log(header)
@@ -25,8 +26,10 @@ export default {
       const data = results.map(item => {
         return this.cnToEn(item, dictionary)
       })
+      await importEmployees(data)
       console.log(data)
     },
+
     // 封装一个函数，将中文字段通过模版转换为英文
     cnToEn(item, dictionary) {
       const data = {}
