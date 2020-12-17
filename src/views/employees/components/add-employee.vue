@@ -126,6 +126,18 @@ export default {
       this.treeData = []
     },
     cloesBtn() {
+      // 重置数据
+      this.formData = {
+        username: '',
+        mobile: '',
+        formOfEmployment: '',
+        workNumber: '',
+        departmentName: '',
+        timeOfEntry: '',
+        correctionTime: ''
+      }
+      // 重置校验
+      this.$refs.addEmployee.resetFields()
       this.$parent.showDialog = false
     },
     async btnOk() {
