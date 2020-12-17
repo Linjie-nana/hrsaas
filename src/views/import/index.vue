@@ -35,10 +35,29 @@ export default {
       const data = {}
       for (const key in item) {
         const newKey = dictionary[key]
-        const value = item[key]
+        let value = item[key]
+        // 正常的数据直接拿 value 即可,
+        // 但是针对时间也就是入职和转正日期, 必须通过函数转换数据
+        if (newKey === 'timeOfEntry' || newKey === 'correctionTime') {
+          // 注意需要变为日期对象 才能入库
+          const formatedDateStr = this.formatDate(value, '/')
+          value = new Date(formatedDateStr)
+        }
         data[newKey] = value
       }
       return data
+    },
+    // 专用于导入excel后时间处理
+    formatDate(numb, format) {
+      const time = new Date((numb - 1) * 24 * 3600000 + 1)
+      time.setYear(time.getFullYear() - 70)
+      const year = time.getFullYear() + ''
+      const month = time.getMonth() + 1 + ''
+      const date = time.getDate() - 1 + ''
+      if (format && format.length === 1) {
+        return year + format + month + format + date
+      }
+      return year + (month < 10 ? '0' + month : month) + (date < 10 ? '0' + date : date)
     }
   }
 
