@@ -7,7 +7,7 @@
         <span slot="after">
           <el-button size="small" type="warning">导入</el-button>
           <el-button size="small" type="danger">导出</el-button>
-          <el-button type="primary" size="small" @click="showDialog = true">新增员工</el-button>
+          <el-button type="primary" size="small" @click="showDialog = !showDialog">新增员工</el-button>
 
         </span>
       </PageTools>
@@ -94,6 +94,7 @@ export default {
       this.pageSetting.size = newSize
       this.getUserList()
     },
+
     // 格式化聘用显示
     formatEmployment(row, column, cellValue, index) {
       // 调用枚举对应对象，根据编辑的目标对象cellValue进行比较再返回
