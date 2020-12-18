@@ -61,6 +61,9 @@
 import { getUserList, delEmployee } from '@/api/employess'
 import addEmployee from './components/add-employee'
 import EmployeeEnum from '@/api/constant/employees'
+// 导入管道方法和枚举
+import { formatDate } from '@/filters'
+import employeesEnum from '@/api/constant/employees'
 export default {
   components: {
     addEmployee
@@ -168,7 +171,17 @@ export default {
       for (const key in dictionary) {
         // console.log(key)
         const enKey = dictionary[key]
-        const value = item[enKey]
+        let value = item[enKey]
+        // 之前的转换, 直接将 value 放了出去
+        // 如果数据处理的是事件或者聘用形式, 需要额外处理
+        if (enKey === 'timeOfEntry' || enKey === 'correctionTime') {
+          value = formatDate(value)
+        }
+        // 如果是聘用形式的数据. 去全局枚举中找到对应的值替换回来
+        if (enKey === 'formOfEmployment') {
+          const obj = employeesEnum.hireType.find(item => item.id === value)
+          value = obj ? obj.value : '不确定的临时工'
+        }
         array.push(value)
       }
 
