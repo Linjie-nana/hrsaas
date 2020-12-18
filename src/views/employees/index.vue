@@ -6,7 +6,7 @@
         <span slot="before">{{ pageSetting.total }}条信息</span>
         <span slot="after">
           <el-button size="small" type="warning" @click="$router.push('/import?type=employee')">导入</el-button>
-          <el-button size="small" type="danger">导出</el-button>
+          <el-button size="small" type="danger" @click="exportData">导出</el-button>
           <el-button type="primary" size="small" @click="showDialog = !showDialog">新增员工</el-button>
 
         </span>
@@ -81,6 +81,24 @@ export default {
     this.getUserList()
   },
   methods: {
+    async exportData() {
+      // 准备导出 excel 文件
+      const excel = await import('@/vendor/Export2Excel')
+      // excel.export_json_to_excel({
+      //   header: tHeader, // 表头 必填
+      //   data, // 具体数据 必填
+      //   filename: 'excel-list', // 非必填
+      //   autoWidth: true, // 非必填
+      //   bookType: 'xlsx' // 非必填
+      // })
+      const pageSetting = {
+        page: 1,
+        size: this.pageSetting.total
+      }
+      // 用引入的原 api 接口发送请求
+      const { rows } = await getUserList(pageSetting)
+      console.log(rows)
+    },
     async getUserList() {
       const { rows, total } = await getUserList(this.pageSetting)
       this.pageSetting.total = total
