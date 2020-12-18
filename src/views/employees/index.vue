@@ -91,13 +91,41 @@ export default {
       //   autoWidth: true, // 非必填
       //   bookType: 'xlsx' // 非必填
       // })
+      console.log(excel)
+      // 导出枚举
+      const headersEnum = {
+        '姓名': 'username',
+        '手机号': 'mobile',
+        '入职日期': 'timeOfEntry',
+        '聘用形式': 'formOfEmployment',
+        '转正日期': 'correctionTime',
+        '工号': 'workNumber',
+        '部门': 'departmentName'
+      }
+
+      // 导出的数据需要header表头和data数据
+      const header = Object.keys(headersEnum)
+      // ["姓名", "手机号", "入职日期", "聘用形式", "转正日期", "工号", "部门"]
+      console.log(header)
+
+      // 这个是获取全部数据的操作
       const pageSetting = {
         page: 1,
         size: this.pageSetting.total
       }
+
       // 用引入的原 api 接口发送请求
       const { rows } = await getUserList(pageSetting)
       console.log(rows)
+
+      // 获取到header和rows后像结合
+      const data = rows.map(item => {
+        // 这里是遍历拿到的所有数据, 每个员工都是对象
+        // 需要转换为数组
+        const newItem = this.obj2Array(item, headersEnum)
+        return newItem
+      })
+      console.log(data)
     },
     async getUserList() {
       const { rows, total } = await getUserList(this.pageSetting)
@@ -129,6 +157,24 @@ export default {
       } catch (err) {
         console.log(err)
       }
+    },
+    // 导出：获得原数据后进行和表头结合的方法
+    obj2Array(item, dictionary) {
+      // console.log('原数据')
+      // console.log(item)
+
+      const array = []
+      // console.log(item)
+      for (const key in dictionary) {
+        // console.log(key)
+        const enKey = dictionary[key]
+        const value = item[enKey]
+        array.push(value)
+      }
+
+      // console.log('转换后')
+      // console.log(array)
+      return array
     }
   }
 
