@@ -37,7 +37,7 @@ export function importEmployees(data) {
   })
 }
 
-// 获取用户相应数据
+// 提交员工相应数据
 export function saveUserDetailById(data) {
   return request({
     url: `/sys/user/${data.id}`,

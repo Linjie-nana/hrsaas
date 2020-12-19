@@ -13,8 +13,8 @@
                   <el-input v-model="formData.newPassword" type="password" />
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="primary">更新</el-button>
-                  <el-button>取消</el-button>
+                  <el-button type="primary" @click="saveUserDetail">更新</el-button>
+                  <el-button @click="$router.back()">取消</el-button>
                 </el-form-item>
               </el-form>
             </el-row>
@@ -33,6 +33,7 @@
 
 <script>
 import { getUserDetailById } from '@/api/user'
+import { saveUserDetailById } from '@/api/employess'
 export default {
   data() {
     return {
@@ -52,7 +53,11 @@ export default {
       const data = await getUserDetailById(this.userId)
       console.log(data)
       this.formData = data
+    },
+    async saveUserDetail() {
+      await saveUserDetailById({ ...this.formData, password: this.formData.newPassword })
     }
+
   }
 }
 </script>
