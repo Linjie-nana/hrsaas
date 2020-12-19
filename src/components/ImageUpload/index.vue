@@ -8,6 +8,7 @@
       :class="{disable: disableUpload}"
       class="uploader"
       :on-remove="handleRemove"
+      :on-change="handleChange"
     >
       <i class="el-icon-plus" />
     </el-upload>
@@ -46,9 +47,14 @@ export default {
       // 我们需要主动弹出一个窗口
       this.imgUrl = file.url
     },
+    // 删除
     handleRemove(file, fileList) {
       // 第二个参数其实就是删除后的文件列表
       // 直接覆盖当前数组即可
+      this.fileList = [...fileList]
+    },
+    // 改变的时候的动作
+    handleChange(file, fileList) {
       this.fileList = [...fileList]
     }
   }
