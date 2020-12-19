@@ -10,6 +10,7 @@
       :on-remove="handleRemove"
       :on-change="handleChange"
       :before-upload="beforeUpload"
+      :http-request="upload"
     >
       <i class="el-icon-plus" />
     </el-upload>
@@ -58,8 +59,8 @@ export default {
     handleChange(file, fileList) {
       this.fileList = [...fileList]
     },
-    //在上传图片前需要校验图片的大小和文件种类
-     beforeUpload(file) {
+    // 在上传图片前需要校验图片的大小和文件种类
+    beforeUpload(file) {
       // 在这个地方可以在上传前验证图片
       // 1. 格式
       const types = ['image/jpeg', 'image/gif', 'image/bmp', 'image/png']
@@ -75,6 +76,14 @@ export default {
       }
       // 最后如果没有任何问题, 请记得 return true 放行
       return true
+    },
+    // 拦截上传，查看上传的图片数据
+    upload(params) {
+      // 这里是说覆盖默认上传逻辑的地方
+      // 可以接受一个参数, 就是上传配置对象
+      // 其中最重要其实是 params.file 文件本身
+      console.log(params.file)
+    }
   }
 }
 </script>
