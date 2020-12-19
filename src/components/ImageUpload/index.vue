@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-upload action="#" list-type="picture-card" :on-preview="preview" :file-list="fileList">
+    <el-upload action="#" list-type="picture-card" :on-preview="preview" :file-list="fileList" :class="{disable: disableUpload}">
       <i class="el-icon-plus" />
     </el-upload>
 
@@ -24,6 +24,11 @@ export default {
       imgUrl: ''
     }
   },
+  computed: {
+    disableUpload() {
+      return this.fileList.length === 1
+    }
+  },
   methods: {
     preview(file) {
       this.showDialog = true
@@ -36,6 +41,12 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.disable {
+  // /deep/ .el-upload--picture-card {
+  ::v-deep .el-upload--picture-card {
+    display: none;
+  }
+}
 </style>
 
