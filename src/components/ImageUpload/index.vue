@@ -9,6 +9,7 @@
       class="uploader"
       :on-remove="handleRemove"
       :on-change="handleChange"
+      :before-upload="beforeUpload"
     >
       <i class="el-icon-plus" />
     </el-upload>
@@ -56,7 +57,24 @@ export default {
     // 改变的时候的动作
     handleChange(file, fileList) {
       this.fileList = [...fileList]
-    }
+    },
+    //在上传图片前需要校验图片的大小和文件种类
+     beforeUpload(file) {
+      // 在这个地方可以在上传前验证图片
+      // 1. 格式
+      const types = ['image/jpeg', 'image/gif', 'image/bmp', 'image/png']
+      if (types.indexOf(file.type) === -1) {
+        this.$message.error('图片只接受 jpeg, png, gif 和 bmp 类型')
+        return false
+      }
+      // 2. 大小
+      const maxSize = 2 * 1024 * 1024
+      if (file.size > maxSize) {
+        this.$message.error('图片大小不能超过 2M')
+        return false
+      }
+      // 最后如果没有任何问题, 请记得 return true 放行
+      return true
   }
 }
 </script>
