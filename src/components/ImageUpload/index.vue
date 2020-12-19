@@ -54,11 +54,11 @@ export default {
   ::v-deep img {
     object-fit: cover;
   }
-  .disable {
-    // /deep/ .el-upload--picture-card {
-    ::v-deep .el-upload--picture-card {
-      display: none;
-    }
+}
+.disable {
+  // /deep/ .el-upload--picture-card {
+  ::v-deep .el-upload--picture-card {
+    display: none;
   }
 }
 </style>
