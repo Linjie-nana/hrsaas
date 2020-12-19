@@ -36,3 +36,12 @@ export function importEmployees(data) {
     data
   })
 }
+
+// 获取用户相应数据
+export function saveUserDetailById(data) {
+  return request({
+    url: `/sys/user/${data.id}`,
+    method: 'put',
+    data
+  })
+}
