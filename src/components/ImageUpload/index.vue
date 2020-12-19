@@ -7,6 +7,7 @@
       :file-list="fileList"
       :class="{disable: disableUpload}"
       class="uploader"
+      :on-remove="handleRemove"
     >
       <i class="el-icon-plus" />
     </el-upload>
@@ -44,6 +45,11 @@ export default {
       // 这里绑定了点击放大镜的事件,
       // 我们需要主动弹出一个窗口
       this.imgUrl = file.url
+    },
+    handleRemove(file, fileList) {
+      // 第二个参数其实就是删除后的文件列表
+      // 直接覆盖当前数组即可
+      this.fileList = [...fileList]
     }
   }
 }
