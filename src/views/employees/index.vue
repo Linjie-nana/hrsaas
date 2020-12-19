@@ -129,6 +129,11 @@ export default {
         return newItem
       })
       console.log(data)
+
+      excel.export_json_to_excel({
+        header,
+        data
+      })
     },
     async getUserList() {
       const { rows, total } = await getUserList(this.pageSetting)

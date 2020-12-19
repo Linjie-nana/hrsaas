@@ -65,7 +65,7 @@ export default {
         // 并且这个存在同名的部门, pid 还要等于父部门的 id (data.id)
         // 应该报错
         if (this.formData.id) {
-          depts.some((item) => item.id !== this.formData.id && item.name === value && item.pid === this.data.id)
+          depts.some((item) => item.id !== this.formData.id && item.name === value && item.pid === this.data.pid)
             ? callback(new Error('同一个部门下不能重名'))
             : callback()
         } else {
