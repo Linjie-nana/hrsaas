@@ -119,6 +119,8 @@ export default {
             // 查找当前上传的图片, 将它的 url 改掉
             if (item.uid === this.currentUid) {
               item.url = 'http://' + data.Location
+              // upload标签，为判断上传状态是否完成
+              item.upload = true
             }
             return item
           })

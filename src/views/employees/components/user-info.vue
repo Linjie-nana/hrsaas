@@ -469,28 +469,44 @@ export default {
     this.getUserDetailById()
   },
   methods: {
+    // 获得员工详细信息
     async getPersonalDetail() {
       this.formData = await getPersonalDetail(this.userId) // 获取员工数据
       if (this.formData.staffPhoto) {
         // 如果有图片，则将图片回显（员工详情照）
         console.log(this.formData.staffPhoto)
-        this.$refs.userDetailPhoto.fileList = [{ url: this.formData.staffPhoto }]
+        this.$refs.userDetailPhoto.fileList = [{ url: this.formData.staffPhoto, upload: true }]
       }
     },
+    // 提交修改员工详情信息
     async savePersonal() {
-      await updatePersonal({ ...this.formData, id: this.userId })
+      // 因为在获取信息的时候，以及有员工的userId,所以提交修改不用重新定位
+      const fileList = this.$refs.userDetailPhoto.fileList
+      // 如果里面没有upload，则提示提交还未完成
+      if (fileList.some(item => !item.upload)) {
+        return this.$message.error('请等待上传完成')
+      }
+      // 提交的时候，将fileList提交上去
+      // 下面的员工基本信息也是一样的操作
+      await updatePersonal({ ...this.formData, staffPhoto: fileList && fileList.length ? fileList[0].url : '' })
       this.$message.success('保存成功')
     },
+
+    // 提交修改员工基本信息
     async saveUser() {
     //  调用父组件
-      await saveUserDetailById(this.userInfo)
+      const fileList = this.$refs.userInfoPhoto.fileList
+      if (fileList.some(item => !item.upload)) {
+        return this.$message.error('请等待上传完成')
+      }
+      await saveUserDetailById({ ...this.userInfo, staffPhoto: fileList && fileList.length ? fileList[0].url : '' })
       this.$message.success('保存成功')
     },
+    // 获得员工基本信息
     async getUserDetailById() {
       this.userInfo = await getUserDetailById(this.userId)
-      console.log(this.userInfo)
       if (this.userInfo.staffPhoto) {
-        this.$refs.userInfoPhoto.fileList = [{ url: this.userInfo.staffPhoto }]
+        this.$refs.userInfoPhoto.fileList = [{ url: this.userInfo.staffPhoto, upload: true }]
       }
     }
   }
