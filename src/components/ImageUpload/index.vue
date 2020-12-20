@@ -22,6 +22,14 @@
 </template>
 
 <script>
+// 这里开始需要使用腾讯云上传图片
+// 1. 引入腾讯云的 api 库
+import COS from 'cos-js-sdk-v5'
+// 封装一个私有的配置文件, 让 git 忽略
+import { cloudConfig } from '@/private-config'
+// 2. 创建腾讯云的实例
+const cos = new COS(cloudConfig)
+console.log(cos)
 export default {
   data() {
     return {
