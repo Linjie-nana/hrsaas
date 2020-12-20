@@ -4,6 +4,13 @@
     <el-form label-width="220px">
       <div class="block">
         <div class="title">基础信息</div>
+        <el-row type="flex" justify="end">
+          <el-tooltip content="点击打印岗位信息">
+            <router-link :to="`/employees/print/${userId}?type=job`">
+              <i class="el-icon-printer" />
+            </router-link>
+          </el-tooltip>
+        </el-row>
         <el-form-item label="岗位">
           <el-input
             v-model="formData.post"
