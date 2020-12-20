@@ -28,8 +28,7 @@ import COS from 'cos-js-sdk-v5'
 // 封装一个私有的配置文件, 让 git 忽略
 import { cloudConfig } from '@/private-config'
 // 2. 创建腾讯云的实例
-const cos = new COS(cloudConfig)
-console.log(cos)
+const cos = new COS({ ...cloudConfig })
 export default {
   data() {
     return {
@@ -91,6 +90,22 @@ export default {
       // 可以接受一个参数, 就是上传配置对象
       // 其中最重要其实是 params.file 文件本身
       console.log(params.file)
+
+      // 腾讯云上传操作
+      cos.putObject({
+        Bucket: 'linjie77-1304560103', /* 必须 */
+        Region: 'ap-guangzhou', /* 存储桶所在地域，必须字段 */
+        Key: params.file.name, /* 必须 */
+        StorageClass: 'STANDARD',
+        Body: params.file, // 上传文件对象
+        onProgress: function(progressData) {
+          // 正在进行中的回调, 每次都可以拿到当前的进度
+          console.log(JSON.stringify(progressData))
+        }
+      }, function(err, data) {
+        // 第二个参数是回调(无论成功失败)
+        console.log(err || data)
+      })
     }
   }
 }
