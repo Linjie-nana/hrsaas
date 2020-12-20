@@ -1,38 +1,52 @@
 <template>
   <div class="dashboard-container">
     <div class="app-container">
-
       <PageTools :show-before="true">
         <span slot="before">{{ pageSetting.total }}条信息</span>
         <span slot="after">
           <el-button size="small" type="warning" @click="$router.push('/import?type=employee')">导入</el-button>
           <el-button size="small" type="danger" @click="exportData">导出</el-button>
           <el-button type="primary" size="small" @click="showDialog = !showDialog">新增员工</el-button>
-
         </span>
       </PageTools>
 
       <el-card>
         <el-table :data="list" border label="序号">
           <el-table-column>
-            <template slot-scope="{ $index }">{{ (pageSetting.page-1)*pageSetting.size + 1 + $index }}</template>
+            <template
+              slot-scope="{ $index }"
+            >{{ (pageSetting.page-1)*pageSetting.size + 1 + $index }}</template>
           </el-table-column>
-          <el-table-column label="姓名" prop="username" sortable="" />
-          <el-table-column label="工号" prop="workNumber" sortable="" />
-          <el-table-column label="聘用形式" prop="formOfEmployment" sortable="" :formatter="formatEmployment" />
-          <el-table-column label="部门" prop="departmentName" sortable="" />
-          <el-table-column label="入职时间" sortable="">
+          <el-table-column label="姓名" prop="username" sortable />
+          <el-table-column label="姓名" prop="username" sortable>
+            <template slot-scope="{row}">
+              <img v-imageerror="require('@/assets/common/head.jpg')" :src="row.staffPhoto" alt="" style="border-radius: 50%; width: 100px; height: 100px; padding: 10px">
+            </template>
+          </el-table-column>
+          <el-table-column label="工号" prop="workNumber" sortable />
+          <el-table-column
+            label="聘用形式"
+            prop="formOfEmployment"
+            sortable
+            :formatter="formatEmployment"
+          />
+          <el-table-column label="部门" prop="departmentName" sortable />
+          <el-table-column label="入职时间" sortable>
             <template slot-scope="{row}">{{ row.timeOfEntry | formatDate }}</template>
           </el-table-column>
 
-          <el-table-column label="账户状态" sortable="" align="center">
+          <el-table-column label="账户状态" sortable align="center">
             <template slot-scope="{row}">
               <el-switch :value="row.enableState===1" />
             </template>
           </el-table-column>
-          <el-table-column label="操作" sortable="" fixed="right" width="280">
+          <el-table-column label="操作" sortable fixed="right" width="280">
             <template slot-scope="{ row }">
-              <el-button type="text" size="small" @click="$router.push('/employees/detail/' + row.id)">查看</el-button>
+              <el-button
+                type="text"
+                size="small"
+                @click="$router.push('/employees/detail/' + row.id)"
+              >查看</el-button>
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
@@ -70,8 +84,7 @@ export default {
   },
   data() {
     return {
-      list: [
-      ],
+      list: [],
       pageSetting: {
         page: 1,
         size: 5,
@@ -97,13 +110,13 @@ export default {
       console.log(excel)
       // 导出枚举
       const headersEnum = {
-        '姓名': 'username',
-        '手机号': 'mobile',
-        '入职日期': 'timeOfEntry',
-        '聘用形式': 'formOfEmployment',
-        '转正日期': 'correctionTime',
-        '工号': 'workNumber',
-        '部门': 'departmentName'
+        姓名: 'username',
+        手机号: 'mobile',
+        入职日期: 'timeOfEntry',
+        聘用形式: 'formOfEmployment',
+        转正日期: 'correctionTime',
+        工号: 'workNumber',
+        部门: 'departmentName'
       }
 
       // 导出的数据需要header表头和data数据
@@ -122,7 +135,7 @@ export default {
       console.log(rows)
 
       // 获取到header和rows后像结合
-      const data = rows.map(item => {
+      const data = rows.map((item) => {
         // 这里是遍历拿到的所有数据, 每个员工都是对象
         // 需要转换为数组
         const newItem = this.obj2Array(item, headersEnum)
@@ -152,7 +165,7 @@ export default {
     // 格式化聘用显示
     formatEmployment(row, column, cellValue, index) {
       // 调用枚举对应对象，根据编辑的目标对象cellValue进行比较再返回
-      const obj = EmployeeEnum.hireType.find(item => item.id === cellValue)
+      const obj = EmployeeEnum.hireType.find((item) => item.id === cellValue)
       // 防御性编程，如过得到的对象不存在，就显示为不存在。
       return obj ? obj.value : '不存在'
     },
@@ -184,7 +197,7 @@ export default {
         }
         // 如果是聘用形式的数据. 去全局枚举中找到对应的值替换回来
         if (enKey === 'formOfEmployment') {
-          const obj = employeesEnum.hireType.find(item => item.id === value)
+          const obj = employeesEnum.hireType.find((item) => item.id === value)
           value = obj ? obj.value : '不确定的临时工'
         }
         array.push(value)
@@ -195,7 +208,6 @@ export default {
       return array
     }
   }
-
 }
 </script>
 
