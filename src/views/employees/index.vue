@@ -69,10 +69,9 @@
       </el-card>
     </div>
     <addEmployee :show-dialog="showDialog" />
-    <el-dialog title="二维码" :visible.sync="showCodeDialog">
+    <el-dialog title="二维码" :visible.sync="showCodeDialog" @opened="showQRcode">
       <el-row type="flex" justify="center">
         <canvas ref="myCanvas" />
-        <img :src="imgUrl" alt="">
       </el-row>
     </el-dialog>
   </div>
@@ -85,6 +84,7 @@ import EmployeeEnum from '@/api/constant/employees'
 // 导入管道方法和枚举
 import { formatDate } from '@/filters'
 import employeesEnum from '@/api/constant/employees'
+import QRcode from 'qrcode'
 export default {
   components: {
     addEmployee
@@ -220,6 +220,12 @@ export default {
       // console.log('转换后')
       // console.log(array)
       return array
+    },
+
+    // 二维码转换
+    showQRcode() {
+      // 转换并显示二维码
+      QRcode.toCanvas(this.$refs.myCanvas, this.imgUrl)
     }
   }
 }
