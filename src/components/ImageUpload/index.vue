@@ -14,7 +14,8 @@
     >
       <i class="el-icon-plus" />
     </el-upload>
-
+    <!-- 进度条 -->
+    <el-progress v-if="showPercent" :percentage="percent" style="width: 180px" />
     <el-dialog :visible.sync="showDialog" title="图片预览">
       <img :src="imgUrl" alt>
     </el-dialog>
@@ -40,7 +41,10 @@ export default {
             'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1608375246691&di=a35d6a6212159f60d18a8396d1ec8e20&imgtype=0&src=http%3A%2F%2Fpic.51yuansu.com%2Fpic3%2Fcover%2F03%2F36%2F15%2F5b8dd7ac4164e_610.jpg'
         }
       ],
-      imgUrl: ''
+      imgUrl: '',
+      currentUid: '',
+      percent: 0,
+      showPercent: false
     }
   },
   computed: {
@@ -82,6 +86,13 @@ export default {
         return false
       }
       // 最后如果没有任何问题, 请记得 return true 放行
+
+      // 上传之前, 记录当前被上传的图片 uid
+      // 准备上传后替换 url
+      this.currentUid = file.uid
+      // 显示进度条
+      this.showPercent = true
+
       return true
     },
     // 拦截上传，查看上传的图片数据
@@ -98,13 +109,28 @@ export default {
         Key: params.file.name, /* 必须 */
         StorageClass: 'STANDARD',
         Body: params.file, // 上传文件对象
-        onProgress: function(progressData) {
+
+        // 获得进度条百分比
+        onProgress: (progressData) => {
           // 正在进行中的回调, 每次都可以拿到当前的进度
           console.log(JSON.stringify(progressData))
+          this.percent = Math.ceil(progressData.percent * 100)
         }
-      }, function(err, data) {
-        // 第二个参数是回调(无论成功失败)
-        console.log(err || data)
+      }, (err, data) => {
+        // 判断上传成功
+        if (!err && data.statusCode === 200) {
+          // 将返回的图片地址, 覆盖到当前显示的本地图片中
+          this.fileList = this.fileList.map(item => {
+            // 查找当前上传的图片, 将它的 url 改掉
+            if (item.uid === this.currentUid) {
+              item.url = 'http://' + data.Location
+            }
+            return item
+          })
+          // 关闭进度条
+          this.showPercent = false
+          console.log(this.fileList)
+        }
       })
     }
   }
