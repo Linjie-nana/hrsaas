@@ -35,12 +35,7 @@ export default {
     return {
       showDialog: false,
       // 图片数组里面的每个对象都是一张图片, 最重要的属性就是 url
-      fileList: [
-        {
-          url:
-            'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1608375246691&di=a35d6a6212159f60d18a8396d1ec8e20&imgtype=0&src=http%3A%2F%2Fpic.51yuansu.com%2Fpic3%2Fcover%2F03%2F36%2F15%2F5b8dd7ac4164e_610.jpg'
-        }
-      ],
+      fileList: [],
       imgUrl: '',
       currentUid: '',
       percent: 0,
