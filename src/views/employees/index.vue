@@ -20,7 +20,8 @@
           <el-table-column label="姓名" prop="username" sortable />
           <el-table-column label="姓名" prop="username" sortable>
             <template slot-scope="{row}">
-              <img v-imageerror="require('@/assets/common/head.jpg')" :src="row.staffPhoto" alt="" style="border-radius: 50%; width: 100px; height: 100px; padding: 10px">
+              <!-- 判断如果有图片存在就触发点击事件，如果没有就一直关闭弹窗 -->
+              <img v-imageerror="require('@/assets/common/head.jpg')" :src="row.staffPhoto" alt="" style="border-radius: 50%; width: 100px; height: 100px; padding: 10px" @click="row.staffPhoto?popCode(row.staffPhoto):showCodeDialog=false">
             </template>
           </el-table-column>
           <el-table-column label="工号" prop="workNumber" sortable />
@@ -68,6 +69,12 @@
       </el-card>
     </div>
     <addEmployee :show-dialog="showDialog" />
+    <el-dialog title="二维码" :visible.sync="showCodeDialog">
+      <el-row type="flex" justify="center">
+        <canvas ref="myCanvas" />
+        <img :src="imgUrl" alt="">
+      </el-row>
+    </el-dialog>
   </div>
 </template>
 
@@ -84,19 +91,26 @@ export default {
   },
   data() {
     return {
+      showCodeDialog: false,
       list: [],
       pageSetting: {
         page: 1,
         size: 5,
         total: 0
       },
-      showDialog: false
+      showDialog: false,
+      imgUrl: ''
     }
   },
   created() {
     this.getUserList()
   },
   methods: {
+    // 点击图片操作弹出二维码
+    popCode(url) {
+      this.imgUrl = url
+      this.showCodeDialog = true
+    },
     async exportData() {
       // 准备导出 excel 文件
       const excel = await import('@/vendor/Export2Excel')
