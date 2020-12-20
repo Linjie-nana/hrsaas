@@ -2,6 +2,14 @@
   <div class="user-info">
     <!-- 个人信息 -->
     <el-form label-width="220px">
+      <!-- 打印 -->
+      <el-row type="flex" justify="end">
+        <el-tooltip content="点击打印个人信息">
+          <router-link :to="`/employees/print/${userId}?type=personal`">
+            <i class="el-icon-printer" />
+          </router-link>
+        </el-tooltip>
+      </el-row>
       <!-- 工号 入职时间 -->
       <el-row class="inline-info">
         <el-col :span="12">
