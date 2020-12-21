@@ -76,7 +76,7 @@
       </el-row>
     </el-dialog>
     <!-- 角色弹框 -->
-    <AssignRole ref="editRole" :show-role-dialog="showRoleDialog" :user-id="userId" />
+    <AssignRole ref="editRole" :show-role-dialog.sync="showRoleDialog" :user-id="userId" />
   </div>
 </template>
 
