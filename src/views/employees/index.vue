@@ -243,10 +243,11 @@ export default {
     },
 
     // 角色弹框方法
-    editRole(id) {
+    async  editRole(id) {
       this.userId = id
+      await this.$refs.editRole.getUserDetailById(this.userId)
+      // 当上面执行完子组件查询用户权限后才弹出
       this.showRoleDialog = true
-      this.$refs.editRole.getUserDetailById(this.userId)
     }
   }
 }

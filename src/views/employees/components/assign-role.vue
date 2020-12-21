@@ -50,8 +50,9 @@ export default {
 
     // 读取角色详细数据方法方法
     async getUserDetailById(id) {
-      const aaa = await getUserDetailById(id)
-      console.log(aaa)
+      const { roleIds } = await getUserDetailById(id)
+      //   被选择的角色权限直接赋值回显
+      this.roleIds = roleIds
     }
   }
 }
