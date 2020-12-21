@@ -13,13 +13,20 @@
 </template>
 
 <script>
-import { getRoleList } from '@/api/settings'
+import { getRoleList } from '@/api/setting'
+// 引入获取角色详细数据
+import { getUserDetailById } from '@/api/user'
+
 export default {
   props: {
     //   判断弹出框状态
     showRoleDialog: {
       type: Boolean,
       default: false
+    },
+    userId: {
+      type: String,
+      default: null
     }
 
   },
@@ -39,6 +46,12 @@ export default {
       // 结构获得rows，放入list中遍历显示
       const { rows } = await getRoleList()
       this.list = rows
+    },
+
+    // 读取角色详细数据方法方法
+    async getUserDetailById(id) {
+      const aaa = await getUserDetailById(id)
+      console.log(aaa)
     }
   }
 }

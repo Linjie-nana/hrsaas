@@ -51,7 +51,7 @@
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
-              <el-button type="text" size="small" @click="editRole">角色</el-button>
+              <el-button type="text" size="small" @click="editRole(row.id)">角色</el-button>
               <el-button type="text" size="small" @click="delEmployee(row.id)">删除</el-button>
             </template>
           </el-table-column>
@@ -76,7 +76,7 @@
       </el-row>
     </el-dialog>
     <!-- 角色弹框 -->
-    <AssignRole :show-role-dialog="showRoleDialog" />
+    <AssignRole ref="editRole" :show-role-dialog="showRoleDialog" :user-id="userId" />
   </div>
 </template>
 
@@ -110,7 +110,10 @@ export default {
         total: 0
       },
       showDialog: false,
-      imgUrl: ''
+      imgUrl: '',
+
+      // 角色id，便于传值于子组件角色弹窗
+      userId: ''
     }
   },
   created() {
@@ -240,8 +243,10 @@ export default {
     },
 
     // 角色弹框方法
-    editRole() {
+    editRole(id) {
+      this.userId = id
       this.showRoleDialog = true
+      this.$refs.editRole.getUserDetailById(this.userId)
     }
   }
 }
