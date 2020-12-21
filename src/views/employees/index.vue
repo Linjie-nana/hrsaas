@@ -83,7 +83,6 @@ import addEmployee from './components/add-employee'
 import EmployeeEnum from '@/api/constant/employees'
 // 导入管道方法和枚举
 import { formatDate } from '@/filters'
-import employeesEnum from '@/api/constant/employees'
 import QRcode from 'qrcode'
 export default {
   components: {
@@ -211,7 +210,7 @@ export default {
         }
         // 如果是聘用形式的数据. 去全局枚举中找到对应的值替换回来
         if (enKey === 'formOfEmployment') {
-          const obj = employeesEnum.hireType.find((item) => item.id === value)
+          const obj = EmployeeEnum.hireType.find((item) => item.id === value)
           value = obj ? obj.value : '不确定的临时工'
         }
         array.push(value)
