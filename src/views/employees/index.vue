@@ -51,7 +51,7 @@
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
-              <el-button type="text" size="small">角色</el-button>
+              <el-button type="text" size="small" @click="editRole">角色</el-button>
               <el-button type="text" size="small" @click="delEmployee(row.id)">删除</el-button>
             </template>
           </el-table-column>
@@ -69,27 +69,39 @@
       </el-card>
     </div>
     <addEmployee :show-dialog="showDialog" />
+    <!-- 二维码弹框 -->
     <el-dialog title="二维码" :visible.sync="showCodeDialog" @opened="showQRcode">
       <el-row type="flex" justify="center">
         <canvas ref="myCanvas" />
       </el-row>
     </el-dialog>
+    <!-- 角色弹框 -->
+    <AssignRole :show-role-dialog="showRoleDialog" />
   </div>
 </template>
 
 <script>
 import { getUserList, delEmployee } from '@/api/employess'
+// 添加角色的
 import addEmployee from './components/add-employee'
 import EmployeeEnum from '@/api/constant/employees'
 // 导入管道方法和枚举
 import { formatDate } from '@/filters'
+// 二维码的
 import QRcode from 'qrcode'
+// 角色设置权限的
+import AssignRole from './components/assign-role'
+
 export default {
   components: {
-    addEmployee
+    addEmployee,
+    AssignRole
   },
   data() {
     return {
+      // 赋权角色弹框
+      showRoleDialog: false,
+      // 二维码弹框
       showCodeDialog: false,
       list: [],
       pageSetting: {
@@ -225,6 +237,11 @@ export default {
     showQRcode() {
       // 转换并显示二维码
       QRcode.toCanvas(this.$refs.myCanvas, this.imgUrl)
+    },
+
+    // 角色弹框方法
+    editRole() {
+      this.showRoleDialog = true
     }
   }
 }
