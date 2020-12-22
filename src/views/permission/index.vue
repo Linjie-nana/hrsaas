@@ -14,7 +14,7 @@
           <el-table-column align="center" label="操作">
             <template slot-scope="{row}">
               <el-button v-if="row.type==1" type="text" @click="addPermission(row.id,2)">添加</el-button>
-              <el-button type="text">编辑</el-button>
+              <el-button type="text" @click="getPermissionDetail(row.id)">编辑</el-button>
               <el-button type="text">删除</el-button>
             </template>
           </el-table-column>
@@ -52,7 +52,7 @@
 
 <script>
 import { converTree } from '@/utils/auth'
-import { addPermission, getPermissionList } from '@/api/permission'
+import { addPermission, getPermissionList, getPermissionDetail, updatePermission } from '@/api/permission'
 export default {
   data() {
     return {
@@ -83,17 +83,27 @@ export default {
       this.formData.type = type
       this.showDialog = true
     },
-    btnOk() {
-      const data = addPermission(this.formData)
-      console.log(data)
-      this.showDialog = false
+    async btnOk() {
+      if (this.formData.id) {
+        // 修改
+        await updatePermission(this.formData)
+      } else {
+        await addPermission(this.formData)
+      }
       console.log(this.formData)
-      this.$message.success('添加成功')
+      this.showDialog = false
+      this.$message.success(this.formData.id ? '修改成功' : '添加成功')
       this.getPermissionList()
     },
     btnClose() {
       this.showDialog = false
       this.formData = ''
+    },
+    // 编辑框
+    async getPermissionDetail(id) {
+      const data = await getPermissionDetail(id)
+      this.formData = data
+      this.showDialog = true
     }
   }
 }
