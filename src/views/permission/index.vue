@@ -15,7 +15,7 @@
             <template slot-scope="{row}">
               <el-button v-if="row.type==1" type="text" @click="addPermission(row.id,2)">添加</el-button>
               <el-button type="text" @click="getPermissionDetail(row.id)">编辑</el-button>
-              <el-button type="text">删除</el-button>
+              <el-button type="text" @click="delPermission(row.id)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -52,7 +52,7 @@
 
 <script>
 import { converTree } from '@/utils/auth'
-import { addPermission, getPermissionList, getPermissionDetail, updatePermission } from '@/api/permission'
+import { addPermission, getPermissionList, getPermissionDetail, updatePermission, delPermission } from '@/api/permission'
 export default {
   data() {
     return {
@@ -114,6 +114,17 @@ export default {
       const data = await getPermissionDetail(id)
       this.formData = data
       this.showDialog = true
+    },
+    // 删除
+    async delPermission(id) {
+      try {
+        await this.$confirm('确定删除？')
+        await delPermission(id)
+        this.$message.success('删除成功')
+        this.getPermissionList()
+      } catch (err) {
+        console.log(err)
+      }
     }
   }
 }
