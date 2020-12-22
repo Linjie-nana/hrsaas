@@ -21,7 +21,7 @@
         </el-table>
       </el-card>
     </div>
-    <el-dialog title="添加权限" :visible="showDialog" @close="btnClose">
+    <el-dialog :title="title" :visible="showDialog" :destroy-on-close="true" @close="btnClose">
       <el-form label-width="80px">
         <el-form-item label="权限名称">
           <el-input v-model="formData.name" />
@@ -66,7 +66,8 @@ export default {
         type: 1,
         pid: ''
       },
-      showDialog: false
+      showDialog: false,
+      title: ''
     }
   },
   created() {
@@ -79,6 +80,7 @@ export default {
       this.permissionList = converTree(res, '0')
     },
     addPermission(pid, type) {
+      this.title = this.formData.id ? '编辑权限' : '新增权限'
       this.formData.pid = pid
       this.formData.type = type
       this.showDialog = true
@@ -97,7 +99,15 @@ export default {
     },
     btnClose() {
       this.showDialog = false
-      this.formData = ''
+      this.formData = {
+        // 权限开关
+        enVisible: '',
+        name: '',
+        code: '',
+        description: '',
+        type: 1,
+        pid: ''
+      }
     },
     // 编辑框
     async getPermissionDetail(id) {
