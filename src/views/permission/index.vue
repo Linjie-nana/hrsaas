@@ -3,7 +3,7 @@
     <div class="app-container">
       <PageTools>
         <template slot="after">
-          <el-button type="primary" @click="addPermission(0,1)">新增权限</el-button>
+          <el-button type="primary" @click="addPermission('0',1)">新增权限</el-button>
         </template>
       </PageTools>
       <el-card>
@@ -21,7 +21,7 @@
         </el-table>
       </el-card>
     </div>
-    <el-dialog title="添加权限" :visible="showDialog">
+    <el-dialog title="添加权限" :visible="showDialog" @close="btnClose">
       <el-form label-width="80px">
         <el-form-item label="权限名称">
           <el-input v-model="formData.name" />
@@ -37,12 +37,14 @@
             v-model="formData.enVisible"
             active-color="#5889fe"
             inactive-color="#e4e4e4"
+            active-value="1"
+            inactive-value="0"
           />
         </el-form-item>
       </el-form>
       <el-row type="flex" justify="center">
-        <el-button type="primary" @click="btnOk()">确认</el-button>
-        <el-button>取消</el-button>
+        <el-button type="primary" @click="btnOk">确认</el-button>
+        <el-button @click="btnClose">取消</el-button>
       </el-row>
     </el-dialog>
   </div>
@@ -50,13 +52,14 @@
 
 <script>
 import { converTree } from '@/utils/auth'
-import { getPermissionList } from '@/api/permission'
+import { addPermission, getPermissionList } from '@/api/permission'
 export default {
   data() {
     return {
       permissionList: [],
       formData: {
-        enVisible: true,
+        // 权限开关
+        enVisible: '',
         name: '',
         code: '',
         description: '',
@@ -81,7 +84,16 @@ export default {
       this.showDialog = true
     },
     btnOk() {
+      const data = addPermission(this.formData)
+      console.log(data)
+      this.showDialog = false
       console.log(this.formData)
+      this.$message.success('添加成功')
+      this.getPermissionList()
+    },
+    btnClose() {
+      this.showDialog = false
+      this.formData = ''
     }
   }
 }
