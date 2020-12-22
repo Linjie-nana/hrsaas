@@ -22,6 +22,7 @@
                 <!-- 插槽导入按钮 -->
                 <template slot-scope="scope">
                   <!-- {{ scope.row }} -->
+                  <el-button type="text" @click="editPerm(scope.row.id)">分配权限</el-button>
                   <el-button type="text" @click="editRole(scope.row.id)">编辑角色</el-button>
                   <el-button type="text" @click="delRole(scope.row.id)">删除角色</el-button>
                 </template>
@@ -88,6 +89,10 @@
           <el-button type="primary" @click="btnOk">确认</el-button>
         </template>
       </el-dialog>
+      <el-dialog title="编辑权限" :visible="showPermDialog">
+        <el-tree :data="permList" :props="{label: 'name'}" :default-expand-all="true" :show-checkbox="true" :check-strictly="true" />
+
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -102,10 +107,13 @@ import {
   addRole
 } from '@/api/setting'
 import { mapGetters } from 'vuex'
-
+import { getPermissionList } from '@/api/permission'
+import { converTree } from '@/utils/auth'
 export default {
   data() {
     return {
+      // 显示分配权限框
+      showPermDialog: false,
       // 弹框状态
       showDialog: false,
       // 弹框数据
@@ -131,6 +139,8 @@ export default {
 
       // 角色数据列表
       roleList: [],
+      // 树数据
+      permList: [],
       // 获取数据时提交的参数
       pageSetting: {
         page: 1,
@@ -254,6 +264,12 @@ export default {
       // elemt form表单清除方法
       this.$refs.roleForm.resetFields()
       this.showDialog = false
+    },
+    // 分配权限
+    async editPerm(id) {
+      const data = await getPermissionList()
+      this.permList = converTree(data, '0')
+      this.showPermDialog = true
     }
   }
 }
