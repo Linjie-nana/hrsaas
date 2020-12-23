@@ -89,10 +89,10 @@
           <el-button type="primary" @click="btnOk">确认</el-button>
         </template>
       </el-dialog>
-      <el-dialog title="编辑权限" :visible="showPermDialog">
+      <el-dialog title="编辑权限" :visible="showPermDialog" @close="btnClPerm">
         <el-tree ref="permTree" node-key="id" :default-checked-keys="checkedList" :data="permList" :props="{label: 'name'}" :default-expand-all="true" :show-checkbox="true" :check-strictly="true" />
         <el-row slot="footer" type="flex" justify="center">
-          <el-button>取消</el-button>
+          <el-button @click="btnClPerm">取消</el-button>
           <el-button type="primary" @click="btnOkPerm">确认</el-button>
         </el-row>
       </el-dialog>
@@ -288,6 +288,7 @@ export default {
       this.permList = converTree(data, '0')
       this.showPermDialog = true
     },
+    // 提交编辑权限
     async btnOkPerm() {
       // 用户id
       const id = this.roleId
@@ -300,7 +301,12 @@ export default {
       }
       await assignPerm(data)
       this.showPermDialog = false
-      this.$message.success('许上林，cnm')
+      this.$message.success('修改成功')
+    },
+    // 关闭编辑分配权限窗口
+    btnClPerm() {
+      this.showPermDialog = false
+      this.checkedList = []
     }
   }
 }
