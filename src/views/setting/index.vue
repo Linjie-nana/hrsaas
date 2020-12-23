@@ -148,7 +148,7 @@ export default {
       permList: [],
       // 已选树数据
       checkedList: [],
-      // 新勾选的权限数
+      // 这个是角色
       roleId: '',
 
       // 获取数据时提交的参数
@@ -277,7 +277,7 @@ export default {
     },
     // 分配权限
     async editPerm(id) {
-      // 将选中的角色数据加入到新勾选中
+      // 这个是角色
       this.roleId = id
       // 就数据回显
       const { permIds } = await getRoleDetail(id)
@@ -287,6 +287,20 @@ export default {
       const data = await getPermissionList()
       this.permList = converTree(data, '0')
       this.showPermDialog = true
+    },
+    async btnOkPerm() {
+      // 用户id
+      const id = this.roleId
+      console.log(id)
+      // 获取到勾选的数组
+      const permIds = this.$refs.permTree.getCheckedKeys()
+      console.log(permIds)
+      const data = {
+        id, permIds
+      }
+      await assignPerm(data)
+      this.showPermDialog = false
+      this.$message.success('许上林，cnm')
     }
   }
 }
