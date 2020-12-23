@@ -1,5 +1,7 @@
 import router from '@/router'
 import store from '@/store'
+// 引入动态路由列表
+import { asyncRoutes } from '@/router'
 // 添加进度条
 import NProgress from 'nprogress' // 引入一份进度条插件
 import 'nprogress/nprogress.css' // 引入进度条样式
@@ -7,7 +9,7 @@ import 'nprogress/nprogress.css' // 引入进度条样式
 const whiteList = ['/login', '/404']
 // 逻辑 设置白名单，如果store中有token ,而且去的是登录页，则将登录页直接转跳到主页
 // 有token去别的地方，则直接放行
-router.beforeEach((to, from, next) => {
+router.beforeEach(async(to, from, next) => {
   // 进度条开启
   NProgress.start()
   if (store.getters.token) {
@@ -16,9 +18,12 @@ router.beforeEach((to, from, next) => {
     } else {
       // 如果没有userId则不会发送数据请求
       if (!store.getters.userId) {
-        store.dispatch('user/getUserInfo')
+        await store.dispatch('user/getUserInfo')
+        router.addRoutes(asyncRoutes)
+        next(to.path)
+      } else {
+        next()
       }
-      next()
     }
   } else {
     // 如果没有token,则判断有没有白名单，如果有白名单就放行
