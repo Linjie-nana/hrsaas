@@ -18,8 +18,16 @@ router.beforeEach(async(to, from, next) => {
     } else {
       // 如果没有userId则不会发送数据请求
       if (!store.getters.userId) {
-        await store.dispatch('user/getUserInfo')
-        router.addRoutes(asyncRoutes)
+        const { roles } = await store.dispatch('user/getUserInfo')
+        console.log('菜单权限：', roles.menus)
+        console.log('所有配置路由', asyncRoutes)
+        const myRoutes = asyncRoutes.filter(item => roles.menus.indexOf(item.name) > 1)
+        console.log(myRoutes)
+        myRoutes.push(
+          // 在动态路由后面放入404判定
+          { path: '*', redirect: '/404', hidden: true }
+        )
+        router.addRoutes(myRoutes)
         next(to.path)
       } else {
         next()

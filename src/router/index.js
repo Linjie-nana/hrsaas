@@ -67,9 +67,8 @@ export const constantRoutes = [
         meta: { title: '导入 Excel' }
       }
     ]
-  },
-  // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  }
+
 ]
 
 // 动态路由配置

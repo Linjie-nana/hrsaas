@@ -53,6 +53,7 @@ export default {
         ...dataUserInfo, ...getUserDetail
       }
       context.commit('setUserInfo', userInfo)
+      return userInfo
     },
 
     logout({ commit }) {
