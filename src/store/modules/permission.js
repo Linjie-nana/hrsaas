@@ -1,4 +1,4 @@
-import { asyncRoutes, constantRoutes } from '@/router'
+import { constantRoutes, asyncRoutes } from '@/router'
 const state = {
   routes: []
 }
@@ -9,7 +9,9 @@ const mutations = {
 }
 const actions = {
   filterRoutes(context, roles) {
-    const myRoutes = asyncRoutes.filter(item => roles.menus.indexOf(item.name) > 1)
+    console.log(asyncRoutes)
+    console.log(roles.menus)
+    const myRoutes = asyncRoutes.filter(item => roles.menus.indexOf(item.name) > -1)
     console.log(myRoutes)
     myRoutes.push(
       // 在动态路由后面放入404判定

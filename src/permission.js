@@ -18,6 +18,7 @@ router.beforeEach(async(to, from, next) => {
       if (!store.getters.userId) {
         const { roles } = await store.dispatch('user/getUserInfo')
         // 将请求放入了vuex
+        console.log(roles)
         const myRoutes = await store.dispatch('permission/filterRoutes', roles)
         router.addRoutes(myRoutes)
         next(to.path)
