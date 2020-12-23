@@ -90,8 +90,11 @@
         </template>
       </el-dialog>
       <el-dialog title="编辑权限" :visible="showPermDialog">
-        <el-tree :data="permList" :props="{label: 'name'}" :default-expand-all="true" :show-checkbox="true" :check-strictly="true" />
-
+        <el-tree ref="permTree" node-key="id" :default-checked-keys="checkedList" :data="permList" :props="{label: 'name'}" :default-expand-all="true" :show-checkbox="true" :check-strictly="true" />
+        <el-row slot="footer" type="flex" justify="center">
+          <el-button>取消</el-button>
+          <el-button type="primary" @click="btnOkPerm">确认</el-button>
+        </el-row>
       </el-dialog>
     </div>
   </div>
@@ -104,7 +107,9 @@ import {
   delRole,
   getRoleDetail,
   updateRole,
-  addRole
+  addRole,
+  // 提交修改角色权限
+  assignPerm
 } from '@/api/setting'
 import { mapGetters } from 'vuex'
 import { getPermissionList } from '@/api/permission'
@@ -141,6 +146,11 @@ export default {
       roleList: [],
       // 树数据
       permList: [],
+      // 已选树数据
+      checkedList: [],
+      // 新勾选的权限数
+      roleId: '',
+
       // 获取数据时提交的参数
       pageSetting: {
         page: 1,
@@ -267,6 +277,13 @@ export default {
     },
     // 分配权限
     async editPerm(id) {
+      // 将选中的角色数据加入到新勾选中
+      this.roleId = id
+      // 就数据回显
+      const { permIds } = await getRoleDetail(id)
+      console.log(permIds)
+      this.checkedList = permIds
+
       const data = await getPermissionList()
       this.permList = converTree(data, '0')
       this.showPermDialog = true
