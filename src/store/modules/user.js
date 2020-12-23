@@ -1,6 +1,7 @@
 import { setToken, getToken, removeToken, setTimeStamp } from '@/utils/auth'
 import { login, getUserInfo, getUserDetailById } from '@/api/user'
 import { Message } from 'element-ui'
+import { resetRouter } from '@/router'
 export default {
   namespaced: true,
   state: {
@@ -59,6 +60,7 @@ export default {
     logout({ commit }) {
       commit('removeToken')
       commit('removeUserInfo')
+      resetRouter()
     }
   }
 }
