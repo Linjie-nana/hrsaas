@@ -1,7 +1,5 @@
 import router from '@/router'
 import store from '@/store'
-// 引入动态路由列表
-import { asyncRoutes } from '@/router'
 // 添加进度条
 import NProgress from 'nprogress' // 引入一份进度条插件
 import 'nprogress/nprogress.css' // 引入进度条样式
@@ -19,14 +17,8 @@ router.beforeEach(async(to, from, next) => {
       // 如果没有userId则不会发送数据请求
       if (!store.getters.userId) {
         const { roles } = await store.dispatch('user/getUserInfo')
-        console.log('菜单权限：', roles.menus)
-        console.log('所有配置路由', asyncRoutes)
-        const myRoutes = asyncRoutes.filter(item => roles.menus.indexOf(item.name) > 1)
-        console.log(myRoutes)
-        myRoutes.push(
-          // 在动态路由后面放入404判定
-          { path: '*', redirect: '/404', hidden: true }
-        )
+        // 将请求放入了vuex
+        const myRoutes = await store.dispatch('permission/filterRoutes', roles)
         router.addRoutes(myRoutes)
         next(to.path)
       } else {
