@@ -59,7 +59,7 @@
               <el-button type="text" size="small">离职</el-button>
               <el-button type="text" size="small" @click="editRole(row.id)">角色</el-button>
               <el-button
-                :disabled="$store.state.user.userInfo.roles.points.indexOf('point-user-delete')===-1"
+                :disabled="!checkPermission('POINT-USER-ADD')"
                 type="text"
                 size="small"
                 @click="delEmployee(row.id)"

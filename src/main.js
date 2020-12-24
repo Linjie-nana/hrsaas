@@ -44,6 +44,10 @@ for (var key in filter) {
   Vue.filter(filterName, filterFunction)
 }
 
+// 全局混入
+import { checkPermissionMixin } from '@/mixin'
+Vue.mixin(checkPermissionMixin)
+
 Vue.config.productionTip = false
 
 new Vue({
