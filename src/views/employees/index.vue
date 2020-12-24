@@ -21,7 +21,13 @@
           <el-table-column label="姓名" prop="username" sortable>
             <template slot-scope="{row}">
               <!-- 判断如果有图片存在就触发点击事件，如果没有就一直关闭弹窗 -->
-              <img v-imageerror="require('@/assets/common/head.jpg')" :src="row.staffPhoto" alt="" style="border-radius: 50%; width: 100px; height: 100px; padding: 10px" @click="row.staffPhoto?popCode(row.staffPhoto):showCodeDialog=false">
+              <img
+                v-imageerror="require('@/assets/common/head.jpg')"
+                :src="row.staffPhoto"
+                alt
+                style="border-radius: 50%; width: 100px; height: 100px; padding: 10px"
+                @click="row.staffPhoto?popCode(row.staffPhoto):showCodeDialog=false"
+              >
             </template>
           </el-table-column>
           <el-table-column label="工号" prop="workNumber" sortable />
@@ -52,7 +58,12 @@
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
               <el-button type="text" size="small" @click="editRole(row.id)">角色</el-button>
-              <el-button :disabled="$store.state.user.userInfo.roles.points.indexOf('point-user-delete')===-1" type="text" size="small" @click="delEmployee(row.id)">删除</el-button>
+              <el-button
+                :disabled="$store.state.user.userInfo.roles.points.indexOf('point-user-delete')===-1"
+                type="text"
+                size="small"
+                @click="delEmployee(row.id)"
+              >删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -243,7 +254,7 @@ export default {
     },
 
     // 角色弹框方法
-    async  editRole(id) {
+    async editRole(id) {
       this.userId = id
       await this.$refs.editRole.getUserDetailById(this.userId)
       // 当上面执行完子组件查询用户权限后才弹出
