@@ -23,6 +23,7 @@
         <el-card class="box-card">
           <div slot="header" class="header">
             <span>工作日历</span>
+            <work-calendar />
           </div>
         <!-- 放置日历组件 -->
         </el-card>
@@ -120,9 +121,12 @@
 
 <script>
 import { mapGetters } from 'vuex'
-
+import WorkCalendar from './components/work-calendar'
 export default {
   name: 'Dashboard',
+  components: {
+    WorkCalendar
+  },
   computed: {
     ...mapGetters([
       'name', 'staffPhoto'
