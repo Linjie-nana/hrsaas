@@ -31,6 +31,12 @@
           <el-dropdown-item divided @click.native="logout">
             <span style="display:block;">Log Out</span>
           </el-dropdown-item>
+          <el-dropdown-item divided @click.native="setLang('cn')">
+            <span style="display: block">中文</span>
+          </el-dropdown-item>
+          <el-dropdown-item divided @click.native="setLang('en')">
+            <span style="display: block">English</span>
+          </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -63,6 +69,9 @@ export default {
     async logout() {
       await this.$store.dispatch('user/logout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+    },
+    setLang(langKey) {
+      this.$i18n.locale = langKey
     }
   }
 }
