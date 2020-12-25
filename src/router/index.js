@@ -31,6 +31,8 @@ import Layout from '@/layout'
  * all roles can be accessed
  */
 // 固定路由配置
+import userRouter from './modules/user'
+
 export const constantRoutes = [
   {
     path: '/login',
@@ -67,7 +69,8 @@ export const constantRoutes = [
         meta: { title: '导入 Excel' }
       }
     ]
-  }
+  },
+  userRouter
 
 ]
 

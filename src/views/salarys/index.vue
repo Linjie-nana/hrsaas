@@ -110,7 +110,7 @@
 <script>
 import { getSalarysList, getTips, getSalaryDetail, getCompanySetting } from '@/api/salarys'
 import EmployeeData from '@/api/constant/employees'
-import { getDepartments } from '@/api/company'
+import { department } from '@/api/company'
 import ChangeSalary from './components/change-salary'
 import FixedSalary from './components/fixed-salary'
 export default {
@@ -173,7 +173,7 @@ export default {
     },
     // 获取组织列表
     async  getDepartments() {
-      const { depts } = await getDepartments()
+      const { depts } = await department()
       this.departments = depts
     },
     async getTips() {
