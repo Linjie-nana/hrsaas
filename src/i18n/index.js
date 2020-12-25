@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
-
+import langEN from 'element-ui/lib/locale/lang/en'
+import langCN from 'element-ui/lib/locale/lang/zh-CN'
 Vue.use(VueI18n)
 
 const messages = {
@@ -16,7 +17,8 @@ const messages = {
     permission: 'permission',
     attendances: 'attendances',
     salarys: 'salarys',
-    social_securitys: 'social_securitys'
+    social_securitys: 'social_securitys',
+    ...langEN
   },
   cn: {
     hello: '你好',
@@ -28,7 +30,9 @@ const messages = {
     permission: '权限控制',
     attendances: '考勤',
     salarys: '工资',
-    social_securitys: '社保'
+    social_securitys: '社保',
+    ...langCN
+
   }
 }
 
