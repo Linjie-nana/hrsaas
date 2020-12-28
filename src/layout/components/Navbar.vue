@@ -72,6 +72,7 @@ export default {
     },
     setLang(langKey) {
       this.$i18n.locale = langKey
+      localStorage.setItem('i18n', langKey)
     }
   }
 }

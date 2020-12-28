@@ -14,7 +14,7 @@ const messages = {
     settings: 'settings',
     approvals: 'approvals',
     employees: 'employees',
-    permission: 'permission',
+    permissions: 'permission',
     attendances: 'attendances',
     salarys: 'salarys',
     social_securitys: 'social_securitys',
@@ -27,7 +27,7 @@ const messages = {
     settings: '公司设置',
     approvals: '审批',
     employees: '员工',
-    permission: '权限控制',
+    permissions: '权限控制',
     attendances: '考勤',
     salarys: '工资',
     social_securitys: '社保',
@@ -39,6 +39,6 @@ const messages = {
 export default new VueI18n({
   // locale 指定当前激活的默认语言
   // messages 指定字典
-  locale: 'en',
+  locale: localStorage.getItem('i18n'),
   messages
 })
