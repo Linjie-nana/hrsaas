@@ -14,7 +14,18 @@ const name = defaultSettings.title || 'vue Admin Template' // page title
 // You can change the port by the following methods:
 // port = 9528 npm run dev OR npm run dev --port = 9528
 const port = process.env.port || process.env.npm_config_port || 9528 // dev port
-
+const cdn = {
+  // 这是一个对象, 有两个属性, 各自储存了需要添加的外部css/js地址
+  css: [
+    'https://unpkg.com/element-ui/lib/theme-chalk/index.css'
+  ],
+  js: [
+    'https://cdn.bootcdn.net/ajax/libs/vue/2.6.12/vue.js',
+    'https://unpkg.com/element-ui/lib/index.js',
+    'https://cdn.jsdelivr.net/npm/xlsx@0.16.6/dist/jszip.min.js',
+    'https://cdn.jsdelivr.net/npm/xlsx@0.16.6/dist/xlsx.full.min.js'
+  ]
+}
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
   /**
@@ -44,6 +55,8 @@ module.exports = {
       }
     }
   },
+  // 如果有其他的 webpack 配置无法直接通过 vue.config.js 修改
+  // 就可以放到这个属性中, 最终会被合并到封装好的 配置当中
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
     // it can be accessed in index.html to inject the correct title.
@@ -52,6 +65,16 @@ module.exports = {
       alias: {
         '@': resolve('src')
       }
+    },
+    externals: {
+      // 这里是配置外部引入的文件,
+      // 所有这里配置过的, 当代码 import 时
+      // 不会打包, 而是指向我们制定的一个变量
+      // key 指的是引入时的名称
+      // value 指的是外部文件引入后,会在当前 window 创建的变量
+      'vue': 'Vue',
+      'element-ui': 'ELEMENT',
+      'xlsx': 'XLSX'
     }
   },
   chainWebpack(config) {
@@ -65,7 +88,15 @@ module.exports = {
         include: 'initial'
       }
     ])
-
+    // 我在上面创建了一个 cdn 变量
+    // 里面储存了该放入 index.html 的地址
+    // 希望在这里能够将它放进去
+    config.plugin('html').tap(args => {
+      // 这里可以接受到原来配置的属性,
+      // 我要在上面添加我自己定义的 cdn
+      args[0].cdn = cdn
+      return args
+    })
     // when there are many pages, it will cause too many meaningless requests
     config.plugins.delete('prefetch')
 
