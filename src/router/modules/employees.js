@@ -4,6 +4,7 @@ export default {
   name: 'employees',
   component: Layout,
   children: [{
+    name: 'employees',
     path: '',
     component: () => import('@/views/employees/index'),
     meta: { title: '员工', icon: 'people' }

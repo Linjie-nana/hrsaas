@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 import langEN from 'element-ui/lib/locale/lang/en'
 import langCN from 'element-ui/lib/locale/lang/zh-CN'
+import cn from './zh'
+import en from './en'
 Vue.use(VueI18n)
 
 const messages = {
@@ -9,7 +11,7 @@ const messages = {
   en: {
     // 里面是句子的key
     hello: 'hello',
-    Dashboard: 'Dashboard',
+    dashboard: 'Dashboard',
     departments: 'departments',
     settings: 'settings',
     approvals: 'approvals',
@@ -18,11 +20,12 @@ const messages = {
     attendances: 'attendances',
     salarys: 'salarys',
     social_securitys: 'social_securitys',
-    ...langEN
+    ...langEN,
+    ...en
   },
   cn: {
     hello: '你好',
-    Dashboard: '首页',
+    dashboard: '首页',
     departments: '组织架构',
     settings: '公司设置',
     approvals: '审批',
@@ -31,8 +34,8 @@ const messages = {
     attendances: '考勤',
     salarys: '工资',
     social_securitys: '社保',
-    ...langCN
-
+    ...langCN,
+    ...cn
   }
 }
 
