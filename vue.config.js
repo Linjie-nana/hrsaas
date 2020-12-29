@@ -14,18 +14,31 @@ const name = defaultSettings.title || 'vue Admin Template' // page title
 // You can change the port by the following methods:
 // port = 9528 npm run dev OR npm run dev --port = 9528
 const port = process.env.port || process.env.npm_config_port || 9528 // dev port
-const cdn = {
-  // 这是一个对象, 有两个属性, 各自储存了需要添加的外部css/js地址
-  css: [
-    'https://unpkg.com/element-ui/lib/theme-chalk/index.css'
-  ],
-  js: [
-    'https://cdn.bootcdn.net/ajax/libs/vue/2.6.12/vue.js',
-    'https://unpkg.com/element-ui/lib/index.js',
-    'https://cdn.jsdelivr.net/npm/xlsx@0.16.6/dist/jszip.min.js',
-    'https://cdn.jsdelivr.net/npm/xlsx@0.16.6/dist/xlsx.full.min.js'
-  ]
+
+// 创建控制引入的变量externals
+let externals = {}
+let cdn = { css: [], js: [] }
+// 获得状态判断是不是生产条件
+const isProduction = process.env.NODE_ENV === 'production'
+if (isProduction) {
+  externals = {
+    'vue': 'Vue',
+    'element-ui': 'ELEMENT',
+    'xlsx': 'XLSX'
+  }
+  cdn = {
+    css: [
+      'https://cdn.bootcdn.net/ajax/libs/element-ui/2.14.1/theme-chalk/index.css'
+    ],
+    js: [
+      'https://cdn.bootcdn.net/ajax/libs/vue/2.6.12/vue.js',
+      'https://cdn.bootcdn.net/ajax/libs/element-ui/2.14.1/index.js',
+      'https://cdn.bootcdn.net/ajax/libs/xlsx/0.16.6/jszip.min.js',
+      'https://cdn.bootcdn.net/ajax/libs/xlsx/0.16.6/xlsx.full.min.js'
+    ]
+  }
 }
+
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
   /**
@@ -66,16 +79,7 @@ module.exports = {
         '@': resolve('src')
       }
     },
-    externals: {
-      // 这里是配置外部引入的文件,
-      // 所有这里配置过的, 当代码 import 时
-      // 不会打包, 而是指向我们制定的一个变量
-      // key 指的是引入时的名称
-      // value 指的是外部文件引入后,会在当前 window 创建的变量
-      'vue': 'Vue',
-      'element-ui': 'ELEMENT',
-      'xlsx': 'XLSX'
-    }
+    externals
   },
   chainWebpack(config) {
     // it can improve the speed of the first screen, it is recommended to turn on preload
